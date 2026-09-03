@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KUNTUR — Analítica de campañas publicitarias con inteligencia artificial</title>
+<meta name="description" content="KUNTUR convierte los datos de Google Ads, Meta Ads y Google Analytics en un informe con recomendaciones concretas sustentadas en cifras. Desarrollado por Carlos Augusto Espinoza, Lima, Perú.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦅</text></svg>">
+<style>
+  :root{
+    --bg:#E9EEF0; --surface:#FBFCFC; --surface-2:#F1F5F6;
+    --ink:#101A20; --ink-2:#33474F; --muted:#69808A;
+    --line:#D2DDE1; --line-strong:#B4C5CB;
+    --accent:#0C6F68; --accent-ink:#0A5F59; --accent-wash:#DCEDEB;
+    color-scheme:light dark;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0B1216; --surface:#111C22; --surface-2:#16242B;
+      --ink:#E3EDF0; --ink-2:#B4C8CF; --muted:#7E959E;
+      --line:#1F3038; --line-strong:#2C424C;
+      --accent:#3BB3A7; --accent-ink:#5FCCC0; --accent-wash:#122E2C;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px}
+  header{padding:64px 0 40px;border-bottom:1px solid var(--line)}
+  .brand{font-size:34px;font-weight:700;letter-spacing:-.02em;margin:0}
+  .brand span{color:var(--accent-ink)}
+  .tagline{margin:8px 0 0;color:var(--muted);font-size:17px}
+  h2{font-size:22px;font-weight:650;letter-spacing:-.01em;margin:48px 0 12px}
+  h3{font-size:16px;font-weight:650;margin:26px 0 6px}
+  p{margin:0 0 14px;color:var(--ink-2);max-width:66ch}
+  ul{margin:0 0 14px;padding-left:20px;color:var(--ink-2);max-width:66ch}
+  li{margin-bottom:7px}
+  .lead{font-size:18px;color:var(--ink);margin-top:28px}
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    padding:22px 24px;margin:18px 0;
+  }
+  .card h3{margin-top:0}
+  .steps{counter-reset:s;list-style:none;padding:0;margin:16px 0}
+  .steps li{
+    counter-increment:s;position:relative;padding-left:42px;margin-bottom:16px;
+    color:var(--ink-2);max-width:64ch;
+  }
+  .steps li::before{
+    content:counter(s);position:absolute;left:0;top:1px;
+    width:28px;height:28px;border-radius:50%;
+    background:var(--accent-wash);color:var(--accent-ink);
+    border:1px solid var(--accent);
+    display:grid;place-items:center;font-size:13px;font-weight:650;
+  }
+  .steps li b{color:var(--ink);font-weight:600}
+  .note{
+    border-left:3px solid var(--accent);padding:2px 0 2px 16px;
+    margin:20px 0;color:var(--ink-2);max-width:64ch;
+  }
+  footer{
+    margin-top:64px;padding:28px 0 72px;border-top:1px solid var(--line);
+    color:var(--muted);font-size:14px;
+  }
+  a{color:var(--accent-ink)}
+  a:hover{color:var(--accent)}
+  .meta{display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1 class="brand">KUN<span>TUR</span></h1>
+    <p class="tagline">Analítica de campañas publicitarias con inteligencia artificial</p>
+  </header>
+
+  <p class="lead">KUNTUR conecta las cuentas publicitarias de un negocio, analiza su rendimiento y entrega un informe con recomendaciones concretas, cada una sustentada en las cifras exactas de esa cuenta.</p>
+
+  <h2>El problema</h2>
+  <p>Una empresa que invierte en Google Ads o Meta Ads recibe cada mes decenas de métricas y ninguna respuesta. Los paneles de las plataformas muestran todo lo que pasó, pero no dicen qué hacer con eso.</p>
+  <p>Contratar a un especialista que revise las cuentas cada mes cuesta lo que cuesta un sueldo, y la mayoría de negocios pequeños y medianos termina eligiendo entre pagar ese sueldo o navegar a ciegas.</p>
+
+  <h2>Cómo funciona</h2>
+  <ol class="steps">
+    <li><b>Autorización.</b> El cliente concede acceso de lectura a sus cuentas desde la pantalla oficial de Google o de Meta. No entrega contraseñas, y puede revocar el acceso cuando quiera.</li>
+    <li><b>Lectura de datos.</b> KUNTUR descarga el rendimiento del período mediante las APIs oficiales. Solo lectura: el sistema no crea, modifica ni pausa campañas.</li>
+    <li><b>Agregación.</b> Las métricas se consolidan por campaña y por anuncio, y se calculan los indicadores derivados que corresponden a cada tipo de campaña.</li>
+    <li><b>Análisis.</b> Los datos agregados se contrastan contra las metas declaradas por el cliente y contra referencias de industria, y se identifican oportunidades priorizadas por el monto de inversión en juego.</li>
+    <li><b>Informe.</b> El resultado es un documento ejecutivo con hallazgos, evidencia numérica, textos publicitarios propuestos y un plan de acción por semanas.</li>
+  </ol>
+
+  <h2>Qué recibe el cliente</h2>
+  <div class="card">
+    <h3>Informe ejecutivo</h3>
+    <p style="margin-bottom:0">Estado de la cuenta, oportunidades priorizadas con cifras y plan de acción repartido por semanas.</p>
+  </div>
+  <div class="card">
+    <h3>Hoja de cálculo</h3>
+    <p style="margin-bottom:0">Indicadores del período, detalle por campaña y anuncio, y los datos en crudo para que el cliente pueda auditarlos.</p>
+  </div>
+  <div class="card">
+    <h3>Documento de textos publicitarios</h3>
+    <p style="margin-bottom:0">Propuestas listas para probar, con el ángulo de comunicación de cada una y el razonamiento detrás.</p>
+  </div>
+
+  <h2>Para quién es</h2>
+  <ul>
+    <li>Negocios que invierten de forma sostenida en publicidad digital y quieren entender su retorno.</li>
+    <li>Agencias que necesitan sustentar sus recomendaciones ante el cliente con números y no con opiniones.</li>
+    <li>Responsables de marketing sin un equipo de analítica detrás.</li>
+  </ul>
+  <p>Funciona con distintos objetivos de campaña: generación de contactos, venta de productos, venta de entradas a eventos, reproducciones de video y crecimiento de audiencia. Cada objetivo se evalúa con los indicadores que le corresponden.</p>
+
+  <h2>Datos y privacidad</h2>
+  <p>KUNTUR accede únicamente a datos de rendimiento de campañas, en modo de solo lectura, y solo de las cuentas que su titular haya autorizado expresamente.</p>
+  <ul>
+    <li>Las credenciales de acceso se almacenan cifradas y nunca se comparten con terceros.</li>
+    <li>No se recopilan datos personales de los usuarios finales de los anunciantes.</li>
+    <li>El titular de la cuenta puede revocar el acceso en cualquier momento desde su propio panel de Google o de Meta.</li>
+  </ul>
+  <p><a href="privacidad.html">Política de privacidad completa</a></p>
+
+  <div class="note">
+    <p style="margin:0"><b>Kuntur</b> es cóndor en quechua: el ave que vuela más alto de los Andes y que desde esa altura ve el terreno completo sin perder de vista el detalle. Esa es la idea del producto — mirar la cuenta entera antes de decidir dónde bajar.</p>
+  </div>
+
+  <h2>Contacto</h2>
+  <p>
+    Carlos Augusto Espinoza — Ingeniero de Sistemas<br>
+    Desarrollador independiente. Lima, Perú.
+  </p>
+  <div class="meta">
+    <a href="mailto:c.augusto.espinoza@gmail.com">c.augusto.espinoza@gmail.com</a>
+    <a href="https://www.linkedin.com/in/carlos-espinoza-651911100/" rel="noopener">LinkedIn</a>
+  </div>
+
+  <footer>
+    KUNTUR — Analítica publicitaria con inteligencia artificial · Lima, Perú<br>
+    Producto desarrollado y operado por Carlos Augusto Espinoza.
+  </footer>
+
+</div>
+</body>
+</html>
