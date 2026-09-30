@@ -27,6 +27,8 @@
   h1{font-size:28px;letter-spacing:-.02em;margin:0}
   .updated{color:var(--muted);font-size:14px;margin-top:8px}
   h2{font-size:19px;font-weight:650;margin:40px 0 10px}
+  h3{font-size:16px;font-weight:650;margin:26px 0 6px}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;word-break:break-all}
   p,li{color:var(--ink-2);max-width:68ch}
   p{margin:0 0 13px}
   ul{padding-left:20px;margin:0 0 13px}
@@ -43,7 +45,7 @@
 
   <header>
     <h1>Política de privacidad</h1>
-    <p class="updated">KUNTUR · Última actualización: 3 de septiembre de 2026</p>
+    <p class="updated">KUNTUR · Última actualización: 30 de septiembre de 2026</p>
   </header>
 
   <h2>1. Quién es el responsable</h2>
@@ -64,10 +66,21 @@
       <td>Proporcionados directamente por el cliente.</td>
     </tr>
   </table>
+  <h3>Qué se lee de Google Analytics, en concreto</h3>
+  <p>El acceso a Google Analytics 4 se concede mediante el permiso
+  <code>https://www.googleapis.com/auth/analytics.readonly</code>, que otorga el titular de la propiedad y es
+  de <strong>solo lectura</strong>. Con él KUNTUR lee, agregados por día y por campaña:</p>
+  <ul>
+    <li>Sesiones, sesiones con interacción y duración de la interacción.</li>
+    <li>Eventos del sitio por nombre, y cuáles de ellos están marcados como evento clave.</li>
+    <li>Fuente, medio y campaña de origen del tráfico, y páginas vistas por ruta.</li>
+    <li>Costo, clics e impresiones que Google Ads envía a Analytics cuando el titular ha vinculado ambas cuentas.</li>
+  </ul>
   <p>KUNTUR <strong>no</strong> accede a listas de clientes, datos de audiencias personalizadas, información de facturación ni a ningún dato que permita identificar a las personas que vieron o hicieron clic en un anuncio.</p>
 
   <h2>3. Para qué se usan</h2>
-  <p>Los datos de rendimiento se usan exclusivamente para producir el análisis y los informes que el propio cliente ha solicitado. No se usan para ningún otro fin, no se venden, no se ceden a terceros y no se emplean para entrenar modelos de inteligencia artificial.</p>
+  <p>Los datos de rendimiento se usan exclusivamente para producir el análisis y los informes que el propio cliente ha solicitado. No se usan para ningún otro fin, <strong>no se venden, no se ceden con fines comerciales, no se usan para publicidad</strong> y no se emplean para entrenar modelos de inteligencia artificial.</p>
+  <p>El único tercero que los procesa es el proveedor de inteligencia artificial descrito en la sección 5, que actúa como encargado de tratamiento por cuenta de KUNTUR y bajo estas mismas restricciones.</p>
 
   <h2>4. Alcance del acceso concedido</h2>
   <p>La autorización se otorga mediante los mecanismos oficiales de cada plataforma (OAuth 2.0 de Google, y el sistema de permisos de Meta). El cliente nunca entrega contraseñas a KUNTUR.</p>
@@ -81,7 +94,22 @@
   <p>Para producir el análisis, KUNTUR envía a la API de Anthropic (Claude) un resumen <strong>agregado</strong> del rendimiento del período: totales, métricas por campaña y por anuncio, y el contexto de negocio que el cliente haya declarado.</p>
   <p>No se envían credenciales, identificadores de usuario, datos de contacto ni información personal de ningún tipo. El procesamiento se realiza mediante la API de pago de Anthropic, que conforme a sus condiciones comerciales no utiliza el contenido enviado para entrenar sus modelos.</p>
 
-  <h2>6. Cómo se protegen</h2>
+  <h2>6. Uso Limitado de los datos de Google</h2>
+  <p>El uso que KUNTUR hace de la información recibida de las APIs de Google se ajusta a la
+  <a href="https://developers.google.com/terms/api-services-user-data-policy" rel="noopener">Política de Datos de Usuario
+  de los Servicios de API de Google</a>, incluidos los requisitos de Uso Limitado.</p>
+  <p>En concreto, los datos obtenidos de Google Analytics mediante el permiso
+  <code>analytics.readonly</code>:</p>
+  <ul>
+    <li>Se usan <strong>únicamente</strong> para generar los informes del propio titular de la cuenta.</li>
+    <li>No se transfieren a terceros salvo a los proveedores estrictamente necesarios para operar el servicio,
+    descritos en esta política, y siempre bajo las mismas restricciones.</li>
+    <li>No se usan con fines publicitarios ni se venden.</li>
+    <li>Ninguna persona los lee, salvo cuando el titular lo solicita para recibir soporte, cuando es necesario
+    por motivos de seguridad, o cuando lo exige la ley.</li>
+  </ul>
+
+  <h2>7. Cómo se protegen</h2>
   <ul>
     <li>Las credenciales de acceso a las plataformas se almacenan cifradas en la base de datos. No se registran en archivos de auditoría ni en registros de actividad.</li>
     <li>El acceso al sistema de administración está restringido al operador de KUNTUR.</li>
@@ -89,7 +117,7 @@
     <li>Se realizan copias de seguridad cifradas de la base de datos.</li>
   </ul>
 
-  <h2>7. Cuánto tiempo se conservan</h2>
+  <h2>8. Cuánto tiempo se conservan</h2>
   <table>
     <tr><th>Dato</th><th>Retención</th></tr>
     <tr><td>Métricas de campañas</td><td>24 meses</td></tr>
@@ -98,10 +126,10 @@
   </table>
   <p>El cliente puede solicitar la eliminación anticipada de todos sus datos escribiendo al correo de contacto. La solicitud se atiende en un plazo máximo de 30 días.</p>
 
-  <h2>8. Derechos del titular</h2>
+  <h2>9. Derechos del titular</h2>
   <p>De acuerdo con la Ley N.º 29733, Ley de Protección de Datos Personales del Perú, y su reglamento, el titular puede ejercer sus derechos de acceso, rectificación, cancelación y oposición sobre los datos personales que le conciernen, escribiendo a <a href="mailto:c.augusto.espinoza@gmail.com">c.augusto.espinoza@gmail.com</a>.</p>
 
-  <h2>9. Cambios en esta política</h2>
+  <h2>10. Cambios en esta política</h2>
   <p>Cualquier modificación se publicará en esta misma dirección, con la fecha de actualización visible en la cabecera. Los cambios sustanciales se comunicarán además por correo a los clientes activos.</p>
 
   <footer>
