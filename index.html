@@ -156,6 +156,22 @@
   }
   .insignia.espera{background:#FBF0D8; color:#8A6416}
 
+  /* ---------------------------------------------------------- servicios */
+  .servicio{
+    background:var(--blanco); border:1px solid var(--linea); border-radius:12px;
+    padding:26px 26px 22px; display:flex; flex-direction:column;
+  }
+  .servicio.actual{border-color:var(--teal-300); box-shadow:0 0 0 1px var(--teal-300) inset}
+  .servicio .etiqueta{
+    font-size:11.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--suave); font-weight:700; margin:0 0 8px;
+  }
+  .servicio h3{font-size:19px; margin-bottom:10px}
+  .servicio p:last-child{margin-bottom:0; margin-top:auto; padding-top:8px}
+  .servicio .aqui{font-size:14px; color:var(--suave); font-style:italic}
+  .enlace-fuerte{font-weight:650; text-decoration:none; border-bottom:2px solid var(--oro)}
+  .enlace-fuerte::after{content:" →"; border:0}
+
   /* ------------------------------------------------------------ hallazgo */
   .hallazgo{
     background:var(--blanco); border:1px solid var(--linea);
@@ -173,6 +189,14 @@
   .cifra .r{font-size:13px; color:var(--suave)}
 
   /* ------------------------------------------------------------- aviso */
+  .regla-canal{
+    background:var(--blanco); border:1px solid var(--linea);
+    border-left:4px solid var(--teal-300); border-radius:12px;
+    padding:20px 24px; margin-top:26px;
+  }
+  .regla-canal p{margin:0; font-size:15.5px}
+  .regla-canal strong{color:var(--tinta)}
+
   .nota{
     border-left:3px solid var(--teal-300); padding:4px 0 4px 18px;
     color:var(--tinta-2); margin:24px 0; max-width:68ch;
@@ -200,9 +224,10 @@
       <b>KUNTUR</b>
     </a>
     <nav>
-      <a href="#producto">Producto</a>
+      <a href="#servicios">Servicios</a>
       <a href="#plataformas">Plataformas</a>
       <a href="#entregables">Entregables</a>
+      <a href="lupa-ux.html">Lupa UX</a>
       <a href="#integraciones">Integraciones</a>
       <a href="#contacto">Contacto</a>
     </nav>
@@ -253,6 +278,41 @@
       </ul>
       <p class="pie">Cada cifra se contrasta contra los datos descargados antes de salir.</p>
     </aside>
+  </div>
+</section>
+
+<section class="seccion" id="servicios">
+  <div class="wrap">
+    <p class="rotulo">Servicios</p>
+    <h2>Dos auditorías: antes del clic y después del clic</h2>
+    <p class="intro">
+      KUNTUR audita la inversión digital con el mismo método en los dos lados: evidencia
+      verificable, revisión humana y un informe que declara lo que no se pudo evaluar.
+    </p>
+
+    <div class="reja c2">
+      <article class="servicio actual">
+        <p class="etiqueta">Antes del clic</p>
+        <h3>Auditoría publicitaria y de medición</h3>
+        <p>
+          Lee las cuentas de Google Ads, Meta Ads, TikTok Ads y Google Analytics 4 que su
+          titular autoriza, verifica cada cifra contra los datos descargados y entrega un
+          informe con hallazgos, textos publicitarios propuestos y un plan por semanas.
+        </p>
+        <p class="aqui">Es lo que describe el resto de esta página.</p>
+      </article>
+
+      <article class="servicio">
+        <p class="etiqueta">Después del clic</p>
+        <h3>Lupa UX — auditoría del sitio web</h3>
+        <p>
+          Diagnostica el sitio al que llega esa inversión: usabilidad, velocidad,
+          accesibilidad y visibilidad en buscadores y asistentes de IA. Entrega hallazgos
+          con evidencia, wireframes del rediseño y el diseño editable en Figma.
+        </p>
+        <p><a class="enlace-fuerte" href="lupa-ux.html">Ver Lupa UX</a></p>
+      </article>
+    </div>
   </div>
 </section>
 
@@ -387,6 +447,7 @@
     <h2>Negocios que invierten y quieren saber en qué</h2>
     <ul class="lista">
       <li>Empresas que invierten de forma sostenida en publicidad digital y quieren entender su retorno.</li>
+      <li>Negocios con un sitio web propio que quieren saber qué lo frena, aunque no tengan agencia.</li>
       <li>Agencias que necesitan sustentar sus recomendaciones ante el cliente con números y no con opiniones.</li>
       <li>Responsables de marketing sin un equipo de analítica detrás.</li>
     </ul>
@@ -395,6 +456,15 @@
       venta de entradas a eventos, reproducciones de video y crecimiento de audiencia. Cada
       objetivo se evalúa con los indicadores que le corresponden.
     </p>
+
+    <div class="regla-canal">
+      <p>
+        <strong>Trabajamos con agencias y con marcas directas, y la regla es la misma en los dos
+        casos:</strong> a un cliente que llegó por una agencia no le ofrecemos nada por fuera de
+        ella. KUNTUR audita y documenta; no ejecuta campañas, no diseña ni desarrolla sitios,
+        y no compite con quien nos contrata.
+      </p>
+    </div>
   </div>
 </section>
 
@@ -496,8 +566,10 @@
 
 <footer>
   <div class="wrap">
-    KUNTUR — Auditoría publicitaria con inteligencia artificial · Lima, Perú<br>
-    Producto desarrollado y operado por Carlos Augusto Espinoza ·
+    KUNTUR — Auditoría de la inversión digital con inteligencia artificial · Lima, Perú<br>
+    <a href="#servicios">Auditoría publicitaria</a> ·
+    <a href="lupa-ux.html">Lupa UX</a><br>
+    KUNTUR (también Kuntur Data) es un producto desarrollado y operado por Carlos Augusto Espinoza ·
     <a href="privacidad.html">Privacidad</a> ·
     <a href="terminos.html">Condiciones</a>
   </div>
