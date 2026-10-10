@@ -3,147 +3,505 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KUNTUR — Analítica de campañas publicitarias con inteligencia artificial</title>
-<meta name="description" content="KUNTUR convierte los datos de Google Ads, Meta Ads y Google Analytics en un informe con recomendaciones concretas sustentadas en cifras. Desarrollado por Carlos Augusto Espinoza, Lima, Perú.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦅</text></svg>">
+<title>KUNTUR — Auditoría de campañas publicitarias con inteligencia artificial</title>
+<meta name="description" content="KUNTUR lee las cuentas de Google Ads, Meta Ads, TikTok Ads y Google Analytics 4 que su titular autoriza, verifica cada cifra y entrega un informe ejecutivo con recomendaciones sustentadas. Lima, Perú.">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta property="og:title" content="KUNTUR — Auditoría de campañas publicitarias">
+<meta property="og:description" content="Un informe externo que lee tus cuentas publicitarias, verifica cada cifra y dice qué hacer.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kunturdata.com/">
 <style>
   :root{
-    --bg:#E9EEF0; --surface:#FBFCFC; --surface-2:#F1F5F6;
-    --ink:#101A20; --ink-2:#33474F; --muted:#69808A;
-    --line:#D2DDE1; --line-strong:#B4C5CB;
-    --accent:#0C6F68; --accent-ink:#0A5F59; --accent-wash:#DCEDEB;
-    color-scheme:light dark;
-  }
-  @media (prefers-color-scheme:dark){
-    :root{
-      --bg:#0B1216; --surface:#111C22; --surface-2:#16242B;
-      --ink:#E3EDF0; --ink-2:#B4C8CF; --muted:#7E959E;
-      --line:#1F3038; --line-strong:#2C424C;
-      --accent:#3BB3A7; --accent-ink:#5FCCC0; --accent-wash:#122E2C;
-    }
+    --teal:#1C5A63; --teal-900:#143F46; --teal-300:#4E99A4;
+    --oro:#E8B348; --cielo:#90CAE7; --piedra:#C0BEB6;
+    --crema:#F7F5EE; --blanco:#FFFFFF;
+    --tinta:#13262B; --tinta-2:#3D545C; --suave:#6E858D;
+    --linea:#E2DDD1;
+    --ancho:1080px;
   }
   *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
   body{
-    margin:0;background:var(--bg);color:var(--ink);
-    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    margin:0; background:var(--crema); color:var(--tinta);
+    font:17px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:860px;margin:0 auto;padding:0 22px}
-  header{padding:64px 0 40px;border-bottom:1px solid var(--line)}
-  .brand{font-size:34px;font-weight:700;letter-spacing:-.02em;margin:0}
-  .brand span{color:var(--accent-ink)}
-  .tagline{margin:8px 0 0;color:var(--muted);font-size:17px}
-  h2{font-size:22px;font-weight:650;letter-spacing:-.01em;margin:48px 0 12px}
-  h3{font-size:16px;font-weight:650;margin:26px 0 6px}
-  p{margin:0 0 14px;color:var(--ink-2);max-width:66ch}
-  ul{margin:0 0 14px;padding-left:20px;color:var(--ink-2);max-width:66ch}
-  li{margin-bottom:7px}
-  .lead{font-size:18px;color:var(--ink);margin-top:28px}
-  .card{
-    background:var(--surface);border:1px solid var(--line);border-radius:12px;
-    padding:22px 24px;margin:18px 0;
+  .wrap{max-width:var(--ancho); margin:0 auto; padding:0 28px}
+  a{color:var(--teal)}
+  h2{font-size:30px; line-height:1.25; letter-spacing:-.02em; margin:0 0 10px; font-weight:680}
+  h3{font-size:17px; margin:0 0 6px; font-weight:650}
+  p{margin:0 0 16px; color:var(--tinta-2)}
+  .seccion{padding:70px 0; border-top:1px solid var(--linea)}
+  .rotulo{
+    font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--teal-300); font-weight:700; margin:0 0 12px;
+    display:flex; align-items:center; gap:10px;
   }
-  .card h3{margin-top:0}
-  .steps{counter-reset:s;list-style:none;padding:0;margin:16px 0}
-  .steps li{
-    counter-increment:s;position:relative;padding-left:42px;margin-bottom:16px;
-    color:var(--ink-2);max-width:64ch;
+  .rotulo::before{content:""; width:22px; height:3px; background:var(--oro); border-radius:2px}
+  .intro{font-size:19px; color:var(--tinta-2); max-width:62ch}
+
+  /* ----------------------------------------------------------- cabecera */
+  header.barra{
+    position:sticky; top:0; z-index:50;
+    background:rgba(247,245,238,.92); backdrop-filter:saturate(180%) blur(10px);
+    border-bottom:1px solid var(--linea);
   }
-  .steps li::before{
-    content:counter(s);position:absolute;left:0;top:1px;
-    width:28px;height:28px;border-radius:50%;
-    background:var(--accent-wash);color:var(--accent-ink);
-    border:1px solid var(--accent);
-    display:grid;place-items:center;font-size:13px;font-weight:650;
+  .barra .wrap{display:flex; align-items:center; gap:14px; height:66px}
+  .marca{display:flex; align-items:center; gap:11px; text-decoration:none; color:var(--teal)}
+  .marca img{height:30px; width:auto; display:block}
+  .marca b{font-size:20px; letter-spacing:.07em; font-weight:750}
+  nav{margin-left:auto; display:flex; gap:26px}
+  nav a{color:var(--tinta-2); text-decoration:none; font-size:14.5px}
+  nav a:hover{color:var(--teal)}
+  @media (max-width:820px){ nav{display:none} }
+
+  /* --------------------------------------------------------------- hero */
+  .hero{background:var(--teal); color:#fff; padding:86px 0 78px}
+  .hero h1{
+    font-size:46px; line-height:1.12; letter-spacing:-.025em;
+    margin:0 0 18px; font-weight:730; max-width:17ch;
   }
-  .steps li b{color:var(--ink);font-weight:600}
-  .note{
-    border-left:3px solid var(--accent);padding:2px 0 2px 16px;
-    margin:20px 0;color:var(--ink-2);max-width:64ch;
+  .hero p{color:#CFE3E6; font-size:19px; max-width:60ch; margin-bottom:0}
+  .hero .lema{
+    font-size:12px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--oro); font-weight:700; margin:0 0 20px;
   }
-  footer{
-    margin-top:64px;padding:28px 0 72px;border-top:1px solid var(--line);
-    color:var(--muted);font-size:14px;
+  .acciones{display:flex; flex-wrap:wrap; gap:14px; margin-top:30px}
+  .boton{
+    display:inline-block; background:var(--oro); color:#2A1D00; font-weight:650;
+    text-decoration:none; padding:13px 26px; border-radius:8px; font-size:15.5px;
   }
-  a{color:var(--accent-ink)}
-  a:hover{color:var(--accent)}
-  .meta{display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:10px}
+  .boton.fantasma{background:transparent; color:#fff; border:1px solid rgba(255,255,255,.45)}
+
+  /* El hero en dos columnas: el texto no deberia quedar flotando contra
+     medio lienzo vacio a 1440px. La columna derecha no finge ser una captura
+     del panel -no se puede publicar una, llevan nombres de clientes-: resume
+     que sale de cada corrida. */
+  .hero .wrap{display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,.9fr); gap:56px; align-items:center}
+  .hero .columna-texto{min-width:0}
+  .entrega{
+    background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.18);
+    border-radius:14px; padding:24px 24px 20px;
+  }
+  .entrega .titulo{
+    font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--oro); font-weight:700; margin:0 0 16px;
+  }
+  .entrega ul{list-style:none; margin:0; padding:0}
+  .entrega li{
+    display:flex; gap:13px; align-items:flex-start;
+    padding:13px 0; border-top:1px solid rgba(255,255,255,.13);
+  }
+  .entrega li:first-child{border-top:0; padding-top:0}
+  .entrega .ficha{
+    flex:0 0 34px; height:34px; border-radius:8px; margin-top:1px;
+    background:rgba(255,255,255,.12); color:#fff;
+    display:grid; place-items:center; font-size:10px; font-weight:750; letter-spacing:.04em;
+  }
+  .entrega .nom{display:block; font-weight:650; font-size:15px; color:#fff}
+  .entrega .det{display:block; font-size:13.5px; color:#BCD6DA; margin-top:2px}
+  .entrega .pie{
+    margin:16px 0 0; padding-top:14px; border-top:1px solid rgba(255,255,255,.13);
+    font-size:13px; color:#BCD6DA;
+  }
+  @media (max-width:980px){
+    .hero .wrap{grid-template-columns:1fr; gap:38px}
+    .hero h1{max-width:none}
+  }
+
+  /* -------------------------------------------------------------- rejas */
+  .reja{display:grid; gap:18px; margin-top:28px}
+  .reja.c2{grid-template-columns:repeat(2,1fr)}
+  .reja.c3{grid-template-columns:repeat(3,1fr)}
+  .reja.c4{grid-template-columns:repeat(4,1fr)}
+  @media (max-width:860px){ .reja.c3,.reja.c4{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:560px){ .reja.c2,.reja.c3,.reja.c4{grid-template-columns:1fr} }
+
+  .tarjeta{
+    background:var(--blanco); border:1px solid var(--linea);
+    border-radius:12px; padding:22px 22px 20px;
+  }
+  .tarjeta p{margin:0; font-size:15px}
+  .tarjeta .tipo{
+    font-size:11.5px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--suave); font-weight:700; margin-bottom:9px;
+  }
+
+  /* ----------------------------------------------------------- procesos */
+  ol.pasos{list-style:none; counter-reset:p; padding:0; margin:26px 0 0}
+  ol.pasos li{
+    counter-increment:p; position:relative; padding-left:52px;
+    margin-bottom:20px; color:var(--tinta-2); max-width:72ch;
+  }
+  ol.pasos li::before{
+    content:counter(p); position:absolute; left:0; top:-1px;
+    width:32px; height:32px; border-radius:50%;
+    background:var(--teal); color:#fff;
+    display:grid; place-items:center; font-size:14px; font-weight:700;
+  }
+  ol.pasos b{color:var(--tinta); font-weight:650}
+
+  /* --------------------------------------------------------- plataforma */
+  .plataforma{
+    background:var(--blanco); border:1px solid var(--linea); border-radius:12px;
+    padding:20px; display:flex; flex-direction:column; gap:6px;
+  }
+  .plataforma .nom{font-weight:700; font-size:16px; color:var(--tinta)}
+  .plataforma .que{font-size:14px; color:var(--tinta-2); flex:1 1 auto}
+  .insignia{
+    align-self:flex-start; margin-top:4px; font-size:11px; font-weight:700;
+    letter-spacing:.08em; text-transform:uppercase;
+    padding:3px 9px; border-radius:99px;
+    background:#E6F0E9; color:#2C5F2D;
+  }
+  .insignia.espera{background:#FBF0D8; color:#8A6416}
+
+  /* ------------------------------------------------------------ hallazgo */
+  .hallazgo{
+    background:var(--blanco); border:1px solid var(--linea);
+    border-left:4px solid var(--oro); border-radius:12px;
+    padding:26px 28px; margin-top:26px;
+  }
+  .hallazgo .marca-riesgo{
+    display:inline-block; font-size:11px; font-weight:700; letter-spacing:.1em;
+    text-transform:uppercase; color:#9A3412; background:#FDE7D7;
+    padding:3px 10px; border-radius:99px; margin-bottom:12px;
+  }
+  .hallazgo h3{font-size:21px; line-height:1.3; margin-bottom:10px}
+  .cifras{display:flex; gap:40px; margin:20px 0 4px; flex-wrap:wrap}
+  .cifra .n{font-size:32px; font-weight:730; color:var(--teal); line-height:1.1}
+  .cifra .r{font-size:13px; color:var(--suave)}
+
+  /* ------------------------------------------------------------- aviso */
+  .nota{
+    border-left:3px solid var(--teal-300); padding:4px 0 4px 18px;
+    color:var(--tinta-2); margin:24px 0; max-width:68ch;
+  }
+  .lista{margin:0 0 16px; padding-left:22px; color:var(--tinta-2); max-width:68ch}
+  .lista li{margin-bottom:8px}
+
+  /* --------------------------------------------------------- contacto */
+  .contacto{background:var(--teal-900); color:#fff}
+  .contacto h2{color:#fff}
+  .contacto p{color:#CFE3E6}
+  .contacto a{color:var(--oro)}
+  .datos{display:flex; flex-wrap:wrap; gap:10px 28px; margin-top:18px; font-size:15px}
+
+  footer{padding:30px 0 60px; font-size:13.5px; color:var(--suave)}
+  footer a{color:var(--suave)}
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <header>
-    <h1 class="brand">KUN<span>TUR</span></h1>
-    <p class="tagline">Analítica de campañas publicitarias con inteligencia artificial</p>
-  </header>
-
-  <p class="lead">KUNTUR conecta las cuentas publicitarias de un negocio, analiza su rendimiento y entrega un informe con recomendaciones concretas, cada una sustentada en las cifras exactas de esa cuenta.</p>
-
-  <h2>El problema</h2>
-  <p>Una empresa que invierte en Google Ads o Meta Ads recibe cada mes decenas de métricas y ninguna respuesta. Los paneles de las plataformas muestran todo lo que pasó, pero no dicen qué hacer con eso.</p>
-  <p>Contratar a un especialista que revise las cuentas cada mes cuesta lo que cuesta un sueldo, y la mayoría de negocios pequeños y medianos termina eligiendo entre pagar ese sueldo o navegar a ciegas.</p>
-
-  <h2>Cómo funciona</h2>
-  <ol class="steps">
-    <li><b>Autorización.</b> El cliente concede acceso de lectura a sus cuentas desde la pantalla oficial de Google o de Meta. No entrega contraseñas, y puede revocar el acceso cuando quiera.</li>
-    <li><b>Lectura de datos.</b> KUNTUR descarga el rendimiento del período mediante las APIs oficiales. Solo lectura: el sistema no crea, modifica ni pausa campañas.</li>
-    <li><b>Agregación.</b> Las métricas se consolidan por campaña y por anuncio, y se calculan los indicadores derivados que corresponden a cada tipo de campaña.</li>
-    <li><b>Análisis.</b> Los datos agregados se contrastan contra las metas declaradas por el cliente y contra referencias de industria, y se identifican oportunidades priorizadas por el monto de inversión en juego.</li>
-    <li><b>Informe.</b> El resultado es un documento ejecutivo con hallazgos, evidencia numérica, textos publicitarios propuestos y un plan de acción por semanas.</li>
-  </ol>
-
-  <h2>Qué recibe el cliente</h2>
-  <div class="card">
-    <h3>Informe ejecutivo</h3>
-    <p style="margin-bottom:0">Estado de la cuenta, oportunidades priorizadas con cifras y plan de acción repartido por semanas.</p>
+<header class="barra">
+  <div class="wrap">
+    <a class="marca" href="#inicio">
+      <img src="kuntur-simbolo-teal.png" alt="">
+      <b>KUNTUR</b>
+    </a>
+    <nav>
+      <a href="#producto">Producto</a>
+      <a href="#plataformas">Plataformas</a>
+      <a href="#entregables">Entregables</a>
+      <a href="#integraciones">Integraciones</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
   </div>
-  <div class="card">
-    <h3>Hoja de cálculo</h3>
-    <p style="margin-bottom:0">Indicadores del período, detalle por campaña y anuncio, y los datos en crudo para que el cliente pueda auditarlos.</p>
+</header>
+
+<section class="hero" id="inicio">
+  <div class="wrap">
+    <div class="columna-texto">
+      <p class="lema">Perspectiva analítica &amp; estrategia software</p>
+      <h1>Auditoría de campañas publicitarias con inteligencia artificial</h1>
+      <p>
+        KUNTUR lee las cuentas publicitarias que su titular autoriza, verifica cada cifra
+        contra los datos descargados y entrega un informe ejecutivo con recomendaciones
+        sustentadas en los números exactos de esa cuenta. Acceso de solo lectura, revocable
+        en cualquier momento.
+      </p>
+      <div class="acciones">
+        <a class="boton" href="#contacto">Solicitar el primer informe</a>
+        <a class="boton fantasma" href="#integraciones">Cómo usamos las APIs</a>
+      </div>
+    </div>
+
+    <aside class="entrega">
+      <p class="titulo">Lo que sale de cada período</p>
+      <ul>
+        <li>
+          <span class="ficha">PDF</span>
+          <span>
+            <span class="nom">Informe ejecutivo</span>
+            <span class="det">4 a 5 páginas: hallazgos, evidencia y plan por semanas.</span>
+          </span>
+        </li>
+        <li>
+          <span class="ficha">XLSX</span>
+          <span>
+            <span class="nom">Detalle y datos crudos</span>
+            <span class="det">Indicadores por campaña y anuncio, auditables uno a uno.</span>
+          </span>
+        </li>
+        <li>
+          <span class="ficha">DOCX</span>
+          <span>
+            <span class="nom">Textos publicitarios</span>
+            <span class="det">Variantes por canal, con la longitud verificada.</span>
+          </span>
+        </li>
+      </ul>
+      <p class="pie">Cada cifra se contrasta contra los datos descargados antes de salir.</p>
+    </aside>
   </div>
-  <div class="card">
-    <h3>Documento de textos publicitarios</h3>
-    <p style="margin-bottom:0">Propuestas listas para probar, con el ángulo de comunicación de cada una y el razonamiento detrás.</p>
+</section>
+
+<section class="seccion" id="producto">
+  <div class="wrap">
+    <p class="rotulo">El problema</p>
+    <h2>Decenas de métricas cada mes y ninguna respuesta</h2>
+    <p class="intro">
+      Los paneles de las plataformas muestran todo lo que pasó, pero no dicen qué hacer con
+      eso. Contratar a un especialista que revise las cuentas todos los meses cuesta lo que
+      cuesta un sueldo, y la mayoría de negocios pequeños y medianos termina eligiendo entre
+      pagar ese sueldo o navegar a ciegas.
+    </p>
+
+    <div class="reja c3">
+      <div class="tarjeta">
+        <div class="tipo">01</div>
+        <h3>La plataforma cuenta otra cosa</h3>
+        <p>Un formulario enviado no es un contrato firmado. El reporte mensual solo muestra lo primero.</p>
+      </div>
+      <div class="tarjeta">
+        <div class="tipo">02</div>
+        <h3>Nadie contrasta a quien ejecuta</h3>
+        <p>Quien maneja la pauta es también quien arma el reporte. No hay con qué comprobarlo.</p>
+      </div>
+      <div class="tarjeta">
+        <div class="tipo">03</div>
+        <h3>La medición suele estar rota</h3>
+        <p>Eventos mal marcados, campañas sin etiquetar. Las cifras salen raras y nadie sabe por qué.</p>
+      </div>
+    </div>
   </div>
+</section>
 
-  <h2>Para quién es</h2>
-  <ul>
-    <li>Negocios que invierten de forma sostenida en publicidad digital y quieren entender su retorno.</li>
-    <li>Agencias que necesitan sustentar sus recomendaciones ante el cliente con números y no con opiniones.</li>
-    <li>Responsables de marketing sin un equipo de analítica detrás.</li>
-  </ul>
-  <p>Funciona con distintos objetivos de campaña: generación de contactos, venta de productos, venta de entradas a eventos, reproducciones de video y crecimiento de audiencia. Cada objetivo se evalúa con los indicadores que le corresponden.</p>
+<section class="seccion">
+  <div class="wrap">
+    <p class="rotulo">Cómo funciona</p>
+    <h2>Cinco pasos, y ninguno toca tus campañas</h2>
 
-  <h2>Datos y privacidad</h2>
-  <p>KUNTUR accede únicamente a datos de rendimiento de campañas, en modo de solo lectura, y solo de las cuentas que su titular haya autorizado expresamente.</p>
-  <ul>
-    <li>Las credenciales de acceso se almacenan cifradas y nunca se comparten con terceros.</li>
-    <li>No se recopilan datos personales de los usuarios finales de los anunciantes.</li>
-    <li>El titular de la cuenta puede revocar el acceso en cualquier momento desde su propio panel de Google o de Meta.</li>
-  </ul>
-  <p><a href="privacidad.html">Política de privacidad completa</a> · <a href="terminos.html">Condiciones del servicio</a></p>
-
-  <div class="note">
-    <p style="margin:0"><b>Kuntur</b> es cóndor en quechua: el ave que vuela más alto de los Andes y que desde esa altura ve el terreno completo sin perder de vista el detalle. Esa es la idea del producto — mirar la cuenta entera antes de decidir dónde bajar.</p>
+    <ol class="pasos">
+      <li><b>Autorización.</b> El titular concede acceso de lectura a sus cuentas desde la pantalla oficial de cada plataforma. No entrega contraseñas y puede revocar el acceso cuando quiera.</li>
+      <li><b>Lectura de datos.</b> KUNTUR descarga el rendimiento del período mediante las APIs oficiales. Solo lectura: el sistema no crea, modifica, pausa ni elimina campañas, audiencias ni recursos.</li>
+      <li><b>Agregación.</b> Las métricas se consolidan por campaña, grupo y anuncio, y se calculan los indicadores que corresponden a cada tipo de campaña y a cada formato.</li>
+      <li><b>Análisis y verificación.</b> Los datos agregados se contrastan contra las metas declaradas y contra referencias de industria. Cada cifra que aparece en el informe se verifica contra los datos descargados, y la que no cuadra se marca antes de salir.</li>
+      <li><b>Informe.</b> Un documento ejecutivo con hallazgos, evidencia numérica, textos publicitarios propuestos, un plan por semanas y una sección de lo que no se pudo evaluar.</li>
+    </ol>
   </div>
+</section>
 
-  <h2>Contacto</h2>
-  <p>
-    <strong>Carlos Espinoza</strong> <br />
-    Fundador de KUNTUR · Ingeniería de Sistemas, <br />
-    analítica y gerencia de TI
-  </p>
-  <div class="meta">
-    <a href="mailto:carlos@kunturdata.com">carlos@kunturdata.com</a>
-    <!-- <a href="https://www.linkedin.com/in/carlos-espinoza-651911100/" rel="noopener">LinkedIn</a> -->
+<section class="seccion" id="plataformas">
+  <div class="wrap">
+    <p class="rotulo">Plataformas</p>
+    <h2>Las fuentes que KUNTUR lee</h2>
+    <p class="intro">
+      Cada plataforma se evalúa con sus propias referencias de industria. Comparar el
+      rendimiento de una contra las medianas de otra invierte el signo de la conclusión, así
+      que no se hace.
+    </p>
+
+    <div class="reja c4">
+      <div class="plataforma">
+        <span class="nom">Google Ads</span>
+        <span class="que">Campañas, grupos, anuncios y métricas de costo y resultado.</span>
+        <span class="insignia">En producción</span>
+      </div>
+      <div class="plataforma">
+        <span class="nom">Google Analytics 4</span>
+        <span class="que">Sesiones, eventos clave y origen del tráfico del sitio.</span>
+        <span class="insignia">En producción</span>
+      </div>
+      <div class="plataforma">
+        <span class="nom">Meta Ads</span>
+        <span class="que">Rendimiento de Facebook e Instagram por campaña y anuncio.</span>
+        <span class="insignia espera">Integración lista</span>
+      </div>
+      <div class="plataforma">
+        <span class="nom">TikTok Ads</span>
+        <span class="que">Reportes de campaña, grupo y anuncio de la Marketing API.</span>
+        <span class="insignia espera">Integración lista</span>
+      </div>
+    </div>
   </div>
+</section>
 
-  <footer>
-    KUNTUR — Analítica publicitaria con inteligencia artificial · Lima, Perú<br>
-    Producto desarrollado y operado por Carlos Augusto Espinoza.
-  </footer>
+<section class="seccion" id="entregables">
+  <div class="wrap">
+    <p class="rotulo">Entregables</p>
+    <h2>Hasta tres documentos por período</h2>
 
-</div>
+    <div class="reja c3">
+      <div class="tarjeta">
+        <div class="tipo">PDF · 4 a 5 páginas</div>
+        <h3>Informe ejecutivo</h3>
+        <p>Estado de la cuenta, hallazgos con su evidencia, plan repartido por semanas y una sección de lo que no se pudo evaluar.</p>
+      </div>
+      <div class="tarjeta">
+        <div class="tipo">Hoja de cálculo</div>
+        <h3>Detalle para quien ejecuta</h3>
+        <p>Indicadores del período, detalle por campaña y anuncio, y los datos en crudo para que el titular pueda auditarlos.</p>
+      </div>
+      <div class="tarjeta">
+        <div class="tipo">Documento de texto</div>
+        <h3>Textos publicitarios</h3>
+        <p>Variantes por canal y formato, cada una con su longitud verificada contra el límite exacto de la plataforma.</p>
+      </div>
+    </div>
+
+    <p class="rotulo" style="margin-top:52px">Ejemplo de hallazgo</p>
+    <div class="hallazgo">
+      <span class="marca-riesgo">Riesgo</span>
+      <h3>Solo 2 de 2,119 sesiones se asociaron a una campaña</h3>
+      <p style="margin-bottom:0">
+        El 97.07% del resto es búsqueda orgánica, tráfico directo y referidos: tráfico que no
+        viene de publicidad y es normal que no tenga campaña. Pero mientras el etiquetado no
+        se verifique, ninguna afirmación sobre lo que ocurre después del clic cubre a esta
+        cuenta.
+      </p>
+      <div class="cifras">
+        <div class="cifra"><div class="n">2,119</div><div class="r">Sesiones del sitio</div></div>
+        <div class="cifra"><div class="n">2</div><div class="r">Asociadas a campaña</div></div>
+      </div>
+      <p style="font-size:14px;color:var(--suave);margin:14px 0 0">
+        Caso real de una cuenta auditada en septiembre de 2026, anonimizado.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="seccion">
+  <div class="wrap">
+    <p class="rotulo">Para quién es</p>
+    <h2>Negocios que invierten y quieren saber en qué</h2>
+    <ul class="lista">
+      <li>Empresas que invierten de forma sostenida en publicidad digital y quieren entender su retorno.</li>
+      <li>Agencias que necesitan sustentar sus recomendaciones ante el cliente con números y no con opiniones.</li>
+      <li>Responsables de marketing sin un equipo de analítica detrás.</li>
+    </ul>
+    <p>
+      Funciona con distintos objetivos de campaña: generación de contactos, venta de productos,
+      venta de entradas a eventos, reproducciones de video y crecimiento de audiencia. Cada
+      objetivo se evalúa con los indicadores que le corresponden.
+    </p>
+  </div>
+</section>
+
+<section class="seccion" id="integraciones">
+  <div class="wrap">
+    <p class="rotulo">Integraciones y uso de APIs</p>
+    <h2>Qué pedimos, para qué, y qué no hacemos nunca</h2>
+    <p class="intro">
+      KUNTUR es una aplicación de reporting. Se integra con las APIs oficiales de las
+      plataformas publicitarias y de analítica únicamente para leer el rendimiento de las
+      cuentas cuyo titular lo haya autorizado de forma expresa.
+    </p>
+
+    <div class="reja c2">
+      <div class="tarjeta">
+        <h3>Permisos que se solicitan</h3>
+        <p style="margin-top:8px">
+          Solo los de lectura necesarios para producir el informe del propio anunciante:
+          métricas de campaña, grupo de anuncios y anuncio, e información básica de la cuenta.
+          Donde la plataforma ofrece alcances granulares, se pide el de solo lectura.
+        </p>
+      </div>
+      <div class="tarjeta">
+        <h3>Operaciones de escritura</h3>
+        <p style="margin-top:8px">
+          Ninguna. KUNTUR no crea, modifica, pausa ni elimina campañas, grupos, anuncios,
+          audiencias, presupuestos ni ningún otro recurso, en ninguna de las plataformas
+          integradas.
+        </p>
+      </div>
+      <div class="tarjeta">
+        <h3>Qué se hace con los datos</h3>
+        <p style="margin-top:8px">
+          Se almacenan cifrados y se usan exclusivamente para generar los informes de ese
+          mismo anunciante y compararlos con sus períodos anteriores. No se revenden, no se
+          transfieren a terceros, no se agregan entre anunciantes y no se usan para
+          publicidad. Cada anunciante solo ve lo suyo.
+        </p>
+      </div>
+      <div class="tarjeta">
+        <h3>Revocación</h3>
+        <p style="margin-top:8px">
+          El titular puede retirar el acceso en cualquier momento desde el panel de la propia
+          plataforma o pidiéndolo por correo. Al revocarse, KUNTUR deja de poder leer la
+          cuenta de inmediato.
+        </p>
+      </div>
+    </div>
+
+    <div class="nota">
+      <b>Sobre el uso de inteligencia artificial.</b> El sistema descarga y agrega los datos
+      de forma automática, y un modelo de lenguaje redacta un primer borrador de hallazgos y
+      recomendaciones a partir de esas cifras. Cada cifra se contrasta contra los datos
+      descargados y una persona revisa el informe completo antes de entregarlo. El informe
+      declara que la IA intervino.
+    </div>
+  </div>
+</section>
+
+<section class="seccion">
+  <div class="wrap">
+    <p class="rotulo">Datos y privacidad</p>
+    <h2>Solo lectura, solo lo autorizado</h2>
+    <ul class="lista">
+      <li>Las credenciales de acceso se almacenan cifradas y nunca se comparten con terceros.</li>
+      <li>No se recopilan datos personales de los usuarios finales de los anunciantes.</li>
+      <li>El titular de la cuenta puede revocar el acceso en cualquier momento desde su propio panel.</li>
+    </ul>
+    <p>
+      <a href="privacidad.html">Política de privacidad completa</a> ·
+      <a href="terminos.html">Condiciones del servicio</a>
+    </p>
+
+    <div class="nota">
+      <b>Kuntur</b> es cóndor en quechua: el ave que vuela más alto de los Andes y que desde
+      esa altura ve el terreno completo sin perder de vista el detalle. Esa es la idea del
+      producto — mirar la cuenta entera antes de decidir dónde bajar.
+    </div>
+  </div>
+</section>
+
+<section class="seccion contacto" id="contacto">
+  <div class="wrap">
+    <p class="rotulo" style="color:var(--oro)">Contacto</p>
+    <h2>El primer informe va por nuestra cuenta</h2>
+    <p style="max-width:62ch">
+      Nos das acceso de solo lectura a tus cuentas, corremos el análisis del último mes y te
+      entregamos los documentos, sin costo y sin compromiso. Si no te sirve, retiras el acceso.
+    </p>
+    <p style="margin-bottom:0"><strong style="color:#fff">Carlos Augusto Espinoza</strong><br>
+      Fundador de KUNTUR · Ingeniería de Sistemas, analítica y gerencia de TI</p>
+    <div class="datos">
+      <a href="mailto:carlos@kunturdata.com">carlos@kunturdata.com</a>
+      <span>+51 906 011 090</span>
+      <span>Lima, Perú</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    KUNTUR — Auditoría publicitaria con inteligencia artificial · Lima, Perú<br>
+    Producto desarrollado y operado por Carlos Augusto Espinoza ·
+    <a href="privacidad.html">Privacidad</a> ·
+    <a href="terminos.html">Condiciones</a>
+  </div>
+</footer>
+
 </body>
 </html>
