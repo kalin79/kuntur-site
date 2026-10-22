@@ -3,6 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Consent Mode v2: estado por defecto (debe ir antes de GTM) -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    wait_for_update: 500
+  });
+  try {
+    var kc = JSON.parse(localStorage.getItem('kuntur_consent'));
+    if (kc) { gtag('consent', 'update', kc); }
+  } catch (e) {}
+  window.dataLayer.push({ content_group: 'home' });
+</script>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -257,7 +274,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         en cualquier momento.
       </p>
       <div class="acciones">
-        <a class="boton" href="#contacto">Solicitar el primer informe</a>
+        <a class="boton" href="#contacto" data-cta="solicitar_primer_informe">Solicitar el primer informe</a>
         <a class="boton fantasma" href="#integraciones">Cómo usamos las APIs</a>
       </div>
     </div>
@@ -569,7 +586,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       Fundador de KUNTUR · Ingeniería de Sistemas, analítica y gerencia de TI</p>
     <div class="datos">
       <a href="mailto:carlos@kunturdata.com">carlos@kunturdata.com</a>
-      <span>+51 906 011 090</span>
+      <a href="https://wa.me/51906011090?text=Hola%2C%20vengo%20de%20kunturdata.com" target="_blank" rel="noopener">+51 906 011 090 (WhatsApp)</a>
       <span>Lima, Perú</span>
     </div>
   </div>
@@ -582,9 +599,99 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a href="lupa-ux.html">Lupa UX</a><br>
     KUNTUR (también Kuntur Data) es un producto desarrollado y operado por Carlos Augusto Espinoza ·
     <a href="privacidad.html">Privacidad</a> ·
-    <a href="terminos.html">Condiciones</a>
+    <a href="terminos.html">Condiciones</a> ·
+    <a href="#" data-cookie-prefs>Preferencias de cookies</a>
   </div>
 </footer>
 
+
+<!-- Medicion de contacto y CTA (envia eventos a la capa de datos para GTM) -->
+<script>
+(function () {
+  window.dataLayer = window.dataLayer || [];
+  function contentGroup() {
+    for (var i = window.dataLayer.length - 1; i >= 0; i--) {
+      if (window.dataLayer[i] && window.dataLayer[i].content_group) return window.dataLayer[i].content_group;
+    }
+    return 'sin_definir';
+  }
+  function contactMethod(href) {
+    if (!href) return null;
+    if (/^mailto:/i.test(href)) return 'email';
+    if (/^tel:/i.test(href)) return 'phone';
+    if (/^https?:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i.test(href)) return 'whatsapp';
+    return null;
+  }
+  function locationOf(el) {
+    var tagged = el.closest('[data-track-location]');
+    if (tagged) return tagged.getAttribute('data-track-location');
+    var s = el.closest('section[id], header, footer, nav');
+    if (!s) return 'sin_definir';
+    return s.id || s.tagName.toLowerCase();
+  }
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest('a[href], button[data-cta]');
+    if (!link) return;
+    var method = contactMethod(link.getAttribute('href'));
+    if (method) {
+      window.dataLayer.push({ event: 'contact_click', contact_method: method, contact_location: locationOf(link), content_group: contentGroup() });
+      return;
+    }
+    if (link.hasAttribute('data-cta')) {
+      window.dataLayer.push({ event: 'cta_click', cta_text: link.getAttribute('data-cta'), cta_location: locationOf(link), content_group: contentGroup() });
+    }
+  }, true);
+  document.addEventListener('copy', function () {
+    var sel = String(window.getSelection() || '');
+    if (sel.indexOf('@kunturdata.com') !== -1) {
+      window.dataLayer.push({ event: 'copy_email', contact_method: 'email', content_group: contentGroup() });
+    }
+  });
+})();
+</script>
+
+<!-- Aviso de cookies (Consent Mode v2) -->
+<div id="kuntur-consent" role="dialog" aria-label="Preferencias de cookies" hidden>
+  <p>Usamos cookies de analítica para saber qué partes del sitio se leen y corregirlo. No se usan para publicidad. <a href="privacidad.html">Política de privacidad</a></p>
+  <div class="kc-botones">
+    <button type="button" data-consent="denied">Rechazar</button>
+    <button type="button" data-consent="granted" class="kc-aceptar">Aceptar</button>
+  </div>
+</div>
+<style>
+  #kuntur-consent{position:fixed;left:16px;right:16px;bottom:16px;max-width:560px;margin:0 auto;z-index:9999;
+    background:#143F46;color:#fff;padding:18px 20px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.25);
+    font-size:14.5px;line-height:1.5}
+  #kuntur-consent[hidden]{display:none}
+  #kuntur-consent p{margin:0 0 14px;color:#fff}
+  #kuntur-consent a{color:#E8B348}
+  #kuntur-consent .kc-botones{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+  #kuntur-consent button{font:inherit;font-weight:600;padding:9px 18px;border-radius:6px;cursor:pointer;
+    border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff}
+  #kuntur-consent button.kc-aceptar{background:#E8B348;border-color:#E8B348;color:#13262B}
+</style>
+<script>
+(function () {
+  var box = document.getElementById('kuntur-consent');
+  var stored = null;
+  try { stored = localStorage.getItem('kuntur_consent'); } catch (e) {}
+  if (!stored) box.hidden = false;
+  box.addEventListener('click', function (e) {
+    var choice = e.target.getAttribute('data-consent');
+    if (!choice) return;
+    var state = { analytics_storage: choice, ad_storage: choice, ad_user_data: choice, ad_personalization: choice };
+    gtag('consent', 'update', state);
+    try { localStorage.setItem('kuntur_consent', JSON.stringify(state)); } catch (e) {}
+    window.dataLayer.push({ event: 'consent_update', consent_choice: choice });
+    box.hidden = true;
+  });
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('[data-cookie-prefs]')) return;
+    e.preventDefault();
+    try { localStorage.removeItem('kuntur_consent'); } catch (err) {}
+    box.hidden = false;
+  });
+})();
+</script>
 </body>
 </html>
