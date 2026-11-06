@@ -1,0 +1,4 @@
+# Respaldos y archivos de trabajo que no se publican
+_medicion/
+*.bak*
+.DS_Store
