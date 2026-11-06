@@ -1,0 +1,541 @@
+/* Kuntur Data · kd.js
+   1) Medición para GTM: contacto, CTA, producto, servicio, descargas, FAQ y sección de cierre
+   2) Aviso de cookies con Consent Mode v2 (misma lógica del sitio anterior)
+   3) Motion: Lenis + GSAP (ScrollTrigger, SplitText, ScrambleText) y campo de datos en canvas
+   El contenido es HTML real: si este archivo no carga, el sitio se ve completo y sin movimiento. */
+(function () {
+  'use strict';
+  var d = document, html = d.documentElement;
+
+  /* ---------- 1. Medición para GTM (capa de datos) ----------
+     Eventos: contact_click, cta_click, copy_email, select_product, select_service,
+     download_sample, faq_open, view_contact_section, consent_update (sección 2).
+     Todos llevan content_group y service. Valores de service: kuntur_campanas,
+     kuntur_whatsapp, kuntur_ia, kuntur, lupa_ux, general. */
+  window.dataLayer = window.dataLayer || [];
+  function push(o) { o.content_group = contentGroup(); window.dataLayer.push(o); }
+  function contentGroup() {
+    for (var i = window.dataLayer.length - 1; i >= 0; i--) {
+      if (window.dataLayer[i] && window.dataLayer[i].content_group) return window.dataLayer[i].content_group;
+    }
+    return 'sin_definir';
+  }
+  function contactMethod(href) {
+    if (!href) return null;
+    if (/^mailto:/i.test(href)) return 'email';
+    if (/^tel:/i.test(href)) return 'phone';
+    if (/^https?:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i.test(href)) return 'whatsapp';
+    return null;
+  }
+  // Ubicación estable del elemento: atributo explícito, menús, cabecera, pie o sección.
+  var SECCION = { h1: 'hero', 'h-cta': 'cta_final', 'h-vec': 'cta_final', 'h-sol': 'cta_final', 'h-sel': 'selector_servicio', 'h-cont': 'contacto_directo' };
+  function locationOf(el) {
+    var tagged = el.closest('[data-track-location]');
+    if (tagged) return tagged.getAttribute('data-track-location');
+    var nav = el.closest('nav');
+    if (nav) return nav.classList.contains('bar') ? 'nav' : nav.classList.contains('sheet') ? 'nav_movil' : 'nav_secciones';
+    if (el.closest('header')) return 'header';
+    if (el.closest('footer')) return 'footer';
+    var s = el.closest('section');
+    if (!s) return 'sin_definir';
+    var main = d.querySelector('main');
+    if (main && main.querySelector('section') === s) return 'hero';
+    var lab = s.getAttribute('aria-labelledby');
+    if (lab && SECCION[lab]) return SECCION[lab];
+    if (s.id) return s.id;
+    return lab ? lab.replace(/^h-/, '') : 'sin_definir';
+  }
+  // Servicio al que apunta el clic: atributo explícito, texto del WhatsApp, PDF, sección o página.
+  function serviceFromText(t) {
+    t = (t || '').toLowerCase().replace(/kunturdata\.com/g, '');
+    if (/lupa/.test(t)) return 'lupa_ux';
+    if (/campa/.test(t)) return 'kuntur_campanas';
+    if (/atenci.n por whatsapp|muestra-whatsapp/.test(t)) return 'kuntur_whatsapp';
+    if (/visibilidad/.test(t)) return 'kuntur_ia';
+    if (/kuntur/.test(t)) return 'kuntur';
+    return null;
+  }
+  function serviceOf(el, href) {
+    var tagged = el.closest('[data-service]');
+    if (tagged) return tagged.getAttribute('data-service');
+    var s = null;
+    if (href) { try { s = serviceFromText(decodeURIComponent(href)); } catch (e) { s = serviceFromText(href); } }
+    if (s) return s;
+    var sec = el.closest('section[id]');
+    var bySec = { campanas: 'kuntur_campanas', whatsapp: 'kuntur_whatsapp', ia: 'kuntur_ia' };
+    if (sec && contentGroup() === 'kuntur' && bySec[sec.id]) return bySec[sec.id];
+    var g = contentGroup();
+    return g === 'kuntur' ? 'kuntur' : g === 'lupa_ux' ? 'lupa_ux' : 'general';
+  }
+  function productOf(href) {
+    if (!href) return null;
+    var p = href.split('#')[0].split('?')[0].replace(/\/$/, '');
+    if (/(^|\/)kuntur(\.html)?$/i.test(p)) return 'kuntur';
+    if (/(^|\/)lupa-ux(\.html)?$/i.test(p)) return 'lupa_ux';
+    return null;
+  }
+  function linkType(el) {
+    if (el.classList.contains('valle')) return 'tarjeta';
+    if (el.classList.contains('btn')) return 'boton';
+    if (el.closest('nav')) return 'menu';
+    if (el.closest('footer')) return 'pie';
+    return 'texto';
+  }
+  function slug(t) {
+    return (t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 48);
+  }
+  // Los botones principales reciben un nombre de CTA estable si no lo traen escrito en el HTML.
+  d.querySelectorAll('a.btn:not([data-cta])').forEach(function (a) {
+    if (!contactMethod(a.getAttribute('href'))) a.setAttribute('data-cta', slug(a.textContent));
+  });
+  var TAB = { campanas: 'kuntur_campanas', whatsapp: 'kuntur_whatsapp', ia: 'kuntur_ia', lupa: 'lupa_ux' };
+  d.addEventListener('click', function (e) {
+    var tab = e.target.closest('[role="tab"][data-id]');
+    if (tab) {
+      push({ event: 'select_service', service: TAB[tab.getAttribute('data-id')] || tab.getAttribute('data-id'), service_location: locationOf(tab) });
+      return;
+    }
+    var link = e.target.closest('a[href], button[data-cta]');
+    if (!link) return;
+    var href = link.getAttribute('href');
+    var method = contactMethod(href);
+    if (method) {
+      push({ event: 'contact_click', contact_method: method, contact_location: locationOf(link), service: serviceOf(link, href) });
+      return;
+    }
+    if (href && (link.hasAttribute('download') || /\.pdf($|[?#])/i.test(href)) && href !== '#') {
+      push({ event: 'download_sample', service: serviceOf(link, href), file_name: href.split('/').pop().split('?')[0], link_location: locationOf(link) });
+      return;
+    }
+    var product = productOf(href);
+    if (product && link.getAttribute('aria-current') !== 'page') {
+      push({ event: 'select_product', product: product, link_type: linkType(link), link_location: locationOf(link) });
+    }
+    if (link.hasAttribute('data-cta')) {
+      push({ event: 'cta_click', cta_text: link.getAttribute('data-cta'), cta_location: locationOf(link), service: product || serviceOf(link, href) });
+    }
+  }, true);
+  d.addEventListener('copy', function () {
+    var sel = String(window.getSelection() || '');
+    if (sel.indexOf('@kunturdata.com') !== -1) {
+      push({ event: 'copy_email', contact_method: 'email', service: serviceOf(d.body, null) });
+    }
+  });
+  // Preguntas frecuentes: el evento toggle no burbujea, por eso se escucha en captura.
+  d.addEventListener('toggle', function (e) {
+    var det = e.target;
+    if (!det || det.tagName !== 'DETAILS' || !det.open) return;
+    var sum = det.querySelector('summary');
+    var q = sum ? sum.textContent.replace(/\+\s*$/, '').replace(/\s+/g, ' ').trim() : '';
+    push({ event: 'faq_open', faq_question: q.slice(0, 100), service: serviceOf(det, null) });
+  }, true);
+  // Vista de la sección de cierre (CTA final o selector de muestra): una vez por página.
+  if ('IntersectionObserver' in window) {
+    var vistos = {};
+    var io = new IntersectionObserver(function (en) {
+      en.forEach(function (x) {
+        if (!x.isIntersecting) return;
+        if (x.intersectionRatio < 0.5 && x.intersectionRect.height < window.innerHeight * 0.5) return;
+        var loc = locationOf(x.target.querySelector('h2, h1') || x.target);
+        if (vistos[loc]) return;
+        vistos[loc] = true;
+        io.unobserve(x.target);
+        push({ event: 'view_contact_section', section: loc, service: serviceOf(x.target, null) });
+      });
+    }, { threshold: [0, 0.25, 0.5, 0.75, 1] });
+    d.querySelectorAll('section[aria-labelledby="h-cta"], section[aria-labelledby="h-vec"], section[aria-labelledby="h-sol"], section[aria-labelledby="h-sel"]').forEach(function (s) { io.observe(s); });
+  }
+
+  /* ---------- 2. Aviso de cookies (Consent Mode v2) ---------- */
+  (function consent() {
+    var box = d.createElement('div');
+    box.id = 'kuntur-consent';
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-label', 'Preferencias de cookies');
+    box.hidden = true;
+    box.innerHTML =
+      '<p class="kc-t">Cookies y analítica</p>' +
+      '<p>Usamos cookies de analítica de Google para saber qué partes del sitio se leen y corregirlo. No las usamos para mostrarte anuncios. <a href="privacidad.html#analitica">Política de privacidad</a></p>' +
+      '<div class="kc-botones"><button type="button" data-consent="denied">Rechazar</button>' +
+      '<button type="button" data-consent="granted" class="kc-aceptar">Aceptar</button></div>';
+    d.body.appendChild(box);
+    var stored = null;
+    try { stored = localStorage.getItem('kuntur_consent'); } catch (e) {}
+    if (!stored) box.hidden = false;
+    box.addEventListener('click', function (e) {
+      var choice = e.target.getAttribute('data-consent');
+      if (!choice) return;
+      var state = { analytics_storage: choice, ad_storage: choice, ad_user_data: choice, ad_personalization: choice };
+      if (typeof window.gtag === 'function') window.gtag('consent', 'update', state);
+      try { localStorage.setItem('kuntur_consent', JSON.stringify(state)); } catch (err) {}
+      push({ event: 'consent_update', consent_choice: choice });
+      box.hidden = true;
+    });
+    d.addEventListener('click', function (e) {
+      if (!e.target.closest('[data-cookie-prefs]')) return;
+      e.preventDefault();
+      try { localStorage.removeItem('kuntur_consent'); } catch (err) {}
+      box.hidden = false;
+      var b = box.querySelector('button');
+      if (b) b.focus();
+    });
+  })();
+
+  /* ---------- 3. Motion ---------- */
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var gsap = window.gsap;
+  function ready() { html.classList.add('kd-ready'); }
+  if (reduce || !gsap || !window.ScrollTrigger) { html.classList.remove('kd-js'); ready(); return; }
+
+  var ST = window.ScrollTrigger;
+  gsap.registerPlugin(ST);
+  if (window.SplitText) gsap.registerPlugin(window.SplitText);
+  if (window.ScrambleTextPlugin) gsap.registerPlugin(window.ScrambleTextPlugin);
+  gsap.defaults({ ease: 'expo.out', duration: 1.1 });
+  var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var main = d.querySelector('main');
+  var hero = main && main.querySelector('section');
+
+  /* Scroll suave con Lenis, sincronizado con ScrollTrigger */
+  if (window.Lenis) {
+    var lenis = new window.Lenis({ lerp: 0.085, wheelMultiplier: 0.95, anchors: { offset: -84 } });
+    window.kdLenis = lenis;
+    lenis.on('scroll', ST.update);
+    gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
+    gsap.ticker.lagSmoothing(0);
+  }
+
+  /* Barra de progreso */
+  var bar = d.createElement('div');
+  bar.className = 'kd-progress';
+  bar.setAttribute('aria-hidden', 'true');
+  d.body.appendChild(bar);
+  gsap.to(bar, { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.4 } });
+
+  /* Campo de datos y HUD en el primer bloque */
+  if (hero) { field(hero); hud(hero); }
+
+  function field(sec) {
+    var c = d.createElement('canvas');
+    c.className = 'kd-field';
+    c.setAttribute('aria-hidden', 'true');
+    var veil = sec.querySelector('.veil');
+    if (veil) veil.after(c); else sec.prepend(c);
+    var ctx = c.getContext('2d'), w = 0, h = 0, gap = 26, pts = [], mx = -9999, my = -9999, tx = -9999, ty = -9999;
+    var packets = [], on = true, t0 = performance.now(), intro = 0;
+    function resize() {
+      var r = sec.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      w = r.width; h = r.height;
+      c.width = Math.round(w * dpr); c.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      pts = [];
+      for (var y = gap / 2; y < h; y += gap) for (var x = gap / 2; x < w; x += gap) pts.push(x, y, Math.random());
+      packets = [];
+      for (var i = 0; i < 7; i++) packets.push(spawn(true));
+    }
+    function spawn(any) {
+      var rows = Math.max(1, Math.floor(h / gap));
+      return { y: gap / 2 + gap * Math.floor(Math.random() * rows), x: any ? Math.random() * w : -40, v: 60 + Math.random() * 140, l: 30 + Math.random() * 70 };
+    }
+    sec.addEventListener('pointermove', function (e) { var r = sec.getBoundingClientRect(); tx = e.clientX - r.left; ty = e.clientY - r.top; });
+    sec.addEventListener('pointerleave', function () { tx = ty = -9999; });
+    var last = performance.now();
+    function frame(now) {
+      if (!on) return;
+      var dt = Math.min(0.05, (now - last) / 1000); last = now;
+      var t = (now - t0) / 1000;
+      intro = Math.min(1, intro + dt * 0.6);
+      if (tx < -9000) { mx = tx; my = ty; } else if (mx < -9000) { mx = tx; my = ty; } else { mx += (tx - mx) * 0.12; my += (ty - my) * 0.12; }
+      ctx.clearRect(0, 0, w, h);
+      var scan = ((t % 9) / 9) * (w + 600) - 300;
+      for (var i = 0; i < pts.length; i += 3) {
+        var x = pts[i], y = pts[i + 1], r = pts[i + 2];
+        var a = 0.08 + r * 0.06 + Math.sin(x * 0.011 + t * 0.7 + Math.cos(y * 0.009 - t * 0.45) * 1.6) * 0.05;
+        var s = 1.2, ox = 0, oy = 0;
+        var dx = x - mx, dy = y - my, dm = Math.sqrt(dx * dx + dy * dy);
+        if (dm < 180) { var f = 1 - dm / 180; f *= f; a += f * 0.7; s += f * 1.8; if (dm > 0.1) { ox = dx / dm * f * 10; oy = dy / dm * f * 10; } }
+        var ds = Math.abs(x - scan);
+        if (ds < 110) a += (1 - ds / 110) * 0.38 * (0.35 + r * 0.65);
+        a *= intro;
+        if (a < 0.02) continue;
+        ctx.fillStyle = 'rgba(144,202,231,' + (a > 1 ? 1 : a).toFixed(3) + ')';
+        ctx.fillRect(x + ox - s / 2, y + oy - s / 2, s, s);
+      }
+      for (var p = 0; p < packets.length; p++) {
+        var k = packets[p];
+        k.x += k.v * dt;
+        if (k.x - k.l > w) { packets[p] = spawn(false); continue; }
+        var g = ctx.createLinearGradient(k.x - k.l, 0, k.x, 0);
+        g.addColorStop(0, 'rgba(232,179,72,0)');
+        g.addColorStop(1, 'rgba(232,179,72,' + (0.55 * intro).toFixed(3) + ')');
+        ctx.fillStyle = g;
+        ctx.fillRect(k.x - k.l, k.y - 0.5, k.l, 1);
+        ctx.fillStyle = 'rgba(247,245,238,' + (0.9 * intro).toFixed(3) + ')';
+        ctx.fillRect(k.x - 1, k.y - 1, 2, 2);
+      }
+      requestAnimationFrame(frame);
+    }
+    resize();
+    var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(resize, 150); });
+    function setOn(v) { if (v && !on) { on = true; last = performance.now(); requestAnimationFrame(frame); } else if (!v) on = false; }
+    new IntersectionObserver(function (en) { setOn(en[0].isIntersecting && !d.hidden); }).observe(sec);
+    d.addEventListener('visibilitychange', function () { setOn(!d.hidden); });
+    requestAnimationFrame(frame);
+  }
+
+  function hud(sec) {
+    var el = d.createElement('div');
+    el.className = 'kd-hud';
+    el.setAttribute('aria-hidden', 'true');
+    el.innerHTML = '<i></i><i></i><i></i><i></i><div class="scan"></div><div class="rd">' +
+      '<span>LAT −12.0464 · LON −77.0428</span>' +
+      '<span><b class="live"></b>Acceso · solo lectura</span>' +
+      '<span class="clk">Sesión 00:00:00</span></div>';
+    sec.appendChild(el);
+    var clk = el.querySelector('.clk'), s0 = Date.now();
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    setInterval(function () {
+      var s = Math.floor((Date.now() - s0) / 1000);
+      clk.textContent = 'Sesión ' + pad(Math.floor(s / 3600)) + ':' + pad(Math.floor(s / 60) % 60) + ':' + pad(s % 60);
+    }, 1000);
+    gsap.from(el.querySelectorAll('i'), { scale: 0.2, opacity: 0, duration: 1.4, stagger: 0.08, delay: 0.3 });
+    gsap.from(el.querySelectorAll('.rd span'), { opacity: 0, x: 16, duration: 1, stagger: 0.12, delay: 0.9 });
+    gsap.fromTo(el.querySelector('.scan'), { left: '0%', opacity: 0 }, { left: '100%', opacity: 1, duration: 2.4, ease: 'power2.inOut', delay: 0.4, onComplete: function () { gsap.to(this.targets()[0], { opacity: 0, duration: 0.6 }); } });
+  }
+
+  /* Helpers de texto */
+  var CH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/·';
+  function scramble(el, delay) {
+    if (!window.ScrambleTextPlugin || el.children.length) return gsap.from(el, { opacity: 0, y: 10, delay: delay || 0 });
+    var txt = el.textContent;
+    return gsap.to(el, { duration: 1.1, delay: delay || 0, ease: 'none', scrambleText: { text: txt, chars: CH, speed: 0.7, revealDelay: 0.2 } });
+  }
+  function splitLines(el, vars) {
+    if (!window.SplitText) return gsap.from(el, Object.assign({ opacity: 0, y: 30 }, vars));
+    var tw;
+    window.SplitText.create(el, {
+      type: 'lines', mask: 'lines', linesClass: 'kd-line', autoSplit: true,
+      onSplit: function (self) {
+        tw = gsap.from(self.lines, Object.assign({ yPercent: 115, duration: 1.35, stagger: 0.09, ease: 'expo.out' }, vars));
+        return tw;
+      }
+    });
+    return tw;
+  }
+
+  function init() {
+    /* Intro del hero */
+    if (hero) {
+      var inner = hero.querySelector('.kd-pre') || hero.querySelector('.wrap > div') || hero.querySelector('.wrap');
+      var paths = hero.querySelectorAll('.ct path');
+      if (paths.length) {
+        gsap.set(paths, { strokeDasharray: 1, strokeDashoffset: 1 });
+        gsap.to(paths, { strokeDashoffset: 0, duration: 2.8, ease: 'power2.inOut', stagger: { amount: 1.4, from: 'random' } });
+      }
+      hero.querySelectorAll('.pt circle').forEach(function (cEl) {
+        gsap.fromTo(cEl, { opacity: 0.12 }, { opacity: 0.9, duration: 1.6 + Math.random() * 2.4, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: Math.random() * 2 });
+      });
+      if (inner) {
+        gsap.set(inner, { opacity: 1 });
+        inner.classList.remove('kd-pre');
+        var tl = gsap.timeline({ delay: 0.15 });
+        var h1 = inner.querySelector('h1');
+        var rest = Array.prototype.filter.call(inner.children, function (c) { return c !== h1 && !c.classList.contains('eti'); });
+        inner.querySelectorAll('.eti').forEach(function (e, i) { tl.add(scramble(e), i * 0.1); });
+        if (h1) tl.add(splitLines(h1, { duration: 1.5, stagger: 0.11 }) || gsap.from(h1, { opacity: 0 }), 0.1);
+        if (rest.length) tl.from(rest, { opacity: 0, y: 28, duration: 1.3, stagger: 0.1 }, 0.55);
+      }
+      var topo = hero.querySelector('.topo, .topo-s');
+      var hx = hero.querySelector(':scope > .wrap');
+      if (topo) gsap.to(topo, { scale: 1.22, yPercent: 5, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.6 } });
+      if (hx) gsap.to(hx, { y: -110, opacity: 0, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom 20%', scrub: 0.6 } });
+    }
+    ready();
+
+    /* Títulos: líneas que suben desde una máscara */
+    d.querySelectorAll('main h2').forEach(function (h) {
+      if (hero && hero.contains(h)) return;
+      if (h.closest('.legal')) return;
+      h.classList.remove('rv');
+      splitLines(h, { scrollTrigger: { trigger: h, start: 'top 88%', once: true } });
+    });
+
+    /* Etiquetas: decodificación tipo terminal */
+    d.querySelectorAll('main .eti').forEach(function (e) {
+      if (hero && hero.contains(e)) return;
+      if (e.closest('.valle')) return;
+      var txt = e.textContent;
+      if (e.children.length || !window.ScrambleTextPlugin) return;
+      ST.create({ trigger: e, start: 'top 92%', once: true, onEnter: function () {
+        gsap.to(e, { duration: 1, ease: 'none', scrambleText: { text: txt, chars: CH, speed: 0.7, revealDelay: 0.15 } });
+      } });
+    });
+
+    /* Valles (tarjetas de producto): revelado con recorte */
+    var valles = gsap.utils.toArray('.valle');
+    valles.forEach(function (v, i) {
+      v.classList.remove('rv');
+      gsap.fromTo(v, { clipPath: 'inset(16% 0% 0% 0% round 16px)', y: 70, opacity: 0.2 },
+        { clipPath: 'inset(0% 0% 0% 0% round 16px)', y: 0, opacity: 1, duration: 1.6, delay: i * 0.12, ease: 'expo.out',
+          scrollTrigger: { trigger: v, start: 'top 90%', once: true } });
+      var ts = v.querySelector('.topo-s');
+      if (ts) gsap.fromTo(ts, { scale: 1.25 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: v, start: 'top bottom', end: 'bottom top', scrub: 0.8 } });
+    });
+
+    /* Documentos de muestra (home) */
+    gsap.utils.toArray('.docs .doc').forEach(function (doc, i) {
+      doc.classList.remove('rv');
+      gsap.from(doc, { y: 130, rotation: -5, opacity: 0, duration: 1.6, delay: (i % 4) * 0.1, scrollTrigger: { trigger: doc, start: 'top 95%', once: true } });
+    });
+
+    /* Pasos: la línea superior se dibuja */
+    gsap.utils.toArray('.step').forEach(function (s) {
+      var l = d.createElement('i');
+      l.className = 'kd-sline';
+      l.setAttribute('aria-hidden', 'true');
+      s.style.borderTopColor = 'rgba(28,90,99,.14)';
+      s.prepend(l);
+      gsap.from(l, { scaleX: 0, duration: 1.6, ease: 'expo.inOut', scrollTrigger: { trigger: s, start: 'top 90%', once: true } });
+    });
+
+    /* Cotas */
+    gsap.utils.toArray('.cota').forEach(function (c) {
+      gsap.from(c, { scaleX: 0, transformOrigin: '0 50%', duration: 1.4, ease: 'expo.inOut', scrollTrigger: { trigger: c, start: 'top 92%', once: true } });
+    });
+
+    /* Cifras: conteo desde cero respetando el formato */
+    gsap.utils.toArray('.num').forEach(function (n) {
+      var src = n.textContent, re = /\d+(?:[.,]\d+)?/g;
+      if (!re.test(src)) return;
+      function render(p) {
+        n.textContent = src.replace(/\d+(?:[.,]\d+)?/g, function (m) {
+          var sep = m.indexOf(',') > -1 ? ',' : '.', dec = m.split(/[.,]/)[1];
+          var v = parseFloat(m.replace(',', '.')) * p;
+          var out = dec ? v.toFixed(dec.length) : String(Math.round(v));
+          return sep === ',' ? out.replace('.', ',') : out;
+        });
+      }
+      n.setAttribute('aria-label', src);
+      var o = { p: 0 };
+      ST.create({ trigger: n, start: 'top 90%', once: true, onEnter: function () {
+        gsap.fromTo(o, { p: 0 }, { p: 1, duration: 2, ease: 'power3.out', onUpdate: function () { render(o.p); }, onComplete: function () { n.textContent = src; } });
+        gsap.from(n, { opacity: 0, y: 14, filter: 'blur(8px)', duration: 1.2 });
+      } });
+    });
+
+    /* Revelado general por lotes */
+    var sel = '.rv, main .card, main .card-d, main .cifra, main .tbox, main .note, main .faq details, main .chat, main .doc, main .g3 > *, main .g4 > *, main .base, main .hacer, main .legal section, main .lg-foot';
+    var els = gsap.utils.toArray(sel).filter(function (el) {
+      if (hero && hero.contains(el)) return false;
+      if (el.classList.contains('valle') || el.closest('.docs') || el.matches('h2')) return false;
+      return true;
+    });
+    // evitar animar un hijo y su contenedor a la vez
+    els = els.filter(function (el) { return !els.some(function (o) { return o !== el && o.contains(el); }); });
+    gsap.set(els, { opacity: 0, y: 34 });
+    ST.batch(els, {
+      start: 'top 92%', once: true,
+      onEnter: function (b) { gsap.to(b, { opacity: 1, y: 0, duration: 1.2, stagger: 0.08, overwrite: true }); }
+    });
+
+    /* Mensajes del chat (Kuntur WhatsApp) */
+    gsap.utils.toArray('.msg').forEach(function (m) {
+      gsap.from(m, { opacity: 0, y: 18, scale: 0.97, duration: 0.9, ease: 'back.out(1.6)', scrollTrigger: { trigger: m, start: 'top 92%', once: true } });
+    });
+
+    /* Hoja crema (home): se despliega al subir */
+    var sheet = d.querySelector('main > .cream');
+    if (sheet && !sheet.matches('section')) {
+      gsap.fromTo(sheet, { borderRadius: '48px 48px 0 0', scale: 0.955, transformOrigin: '50% 0' },
+        { borderRadius: '0px 0px 0 0', scale: 1, ease: 'none', scrollTrigger: { trigger: sheet, start: 'top bottom', end: 'top 35%', scrub: 0.6 } });
+    }
+
+    /* Sol del cierre */
+    gsap.utils.toArray('.sun').forEach(function (s) {
+      gsap.from(s, { scale: 0, opacity: 0, duration: 1.6, ease: 'elastic.out(1,.5)', scrollTrigger: { trigger: s, start: 'top 90%', once: true } });
+      gsap.to(s, { boxShadow: '0 0 0 16px rgba(232,179,72,.10),0 0 0 34px rgba(232,179,72,.04)', duration: 2.4, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+    });
+    gsap.utils.toArray('.sol .topo-s, .sec .topo-s').forEach(function (t) {
+      if (hero && hero.contains(t)) return;
+      gsap.fromTo(t, { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: t.parentNode, start: 'top bottom', end: 'bottom top', scrub: 0.8 } });
+    });
+
+    /* Navegación por secciones: estado activo */
+    d.querySelectorAll('.alt a[href^="#"], .sub a[href^="#"], .toc a[href^="#"]').forEach(function (a) {
+      var t = d.getElementById(a.getAttribute('href').slice(1));
+      if (!t) return;
+      ST.create({ trigger: t, start: 'top 45%', end: 'bottom 45%', onToggle: function (s) { a.classList.toggle('is-on', s.isActive); } });
+    });
+
+    /* Preguntas frecuentes: apertura suave */
+    d.querySelectorAll('.faq details').forEach(function (det) {
+      var sum = det.querySelector('summary');
+      var body = Array.prototype.filter.call(det.children, function (c) { return c !== sum; });
+      if (!sum || !body.length) return;
+      sum.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (det.open) {
+          gsap.to(body, { height: 0, opacity: 0, duration: 0.45, ease: 'power3.inOut', onComplete: function () { det.open = false; gsap.set(body, { clearProps: 'height,opacity' }); ST.refresh(); } });
+          gsap.to(sum.querySelector('.pl'), { rotation: 0, duration: 0.45 });
+        } else {
+          det.open = true;
+          gsap.from(body, { height: 0, opacity: 0, duration: 0.7, ease: 'expo.out', onComplete: function () { gsap.set(body, { clearProps: 'height' }); ST.refresh(); } });
+          gsap.to(sum.querySelector('.pl'), { rotation: 45, duration: 0.6 });
+        }
+      });
+      gsap.set(sum.querySelector('.pl'), { rotation: det.open ? 45 : 0 });
+    });
+
+    /* Interacción con puntero fino */
+    if (fine) {
+      gsap.utils.toArray('.valle, .card, .card-d, .cifra, .tbox, .tab').forEach(function (el) {
+        el.classList.add('kd-spot');
+        el.addEventListener('pointermove', function (e) {
+          var r = el.getBoundingClientRect();
+          el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+          el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+        });
+      });
+      valles.forEach(function (v) {
+        gsap.set(v, { transformPerspective: 1000 });
+        var rx = gsap.quickTo(v, 'rotationX', { duration: 0.8, ease: 'power3.out' });
+        var ry = gsap.quickTo(v, 'rotationY', { duration: 0.8, ease: 'power3.out' });
+        v.addEventListener('pointermove', function (e) {
+          var r = v.getBoundingClientRect();
+          ry(((e.clientX - r.left) / r.width - 0.5) * 6);
+          rx(-((e.clientY - r.top) / r.height - 0.5) * 6);
+        });
+        v.addEventListener('pointerleave', function () { rx(0); ry(0); });
+      });
+      gsap.utils.toArray('main .btn').forEach(function (b) {
+        var qx = gsap.quickTo(b, 'x', { duration: 0.6, ease: 'power3.out' });
+        var qy = gsap.quickTo(b, 'y', { duration: 0.6, ease: 'power3.out' });
+        b.addEventListener('pointermove', function (e) {
+          var r = b.getBoundingClientRect();
+          qx((e.clientX - r.left - r.width / 2) * 0.22);
+          qy((e.clientY - r.top - r.height / 2) * 0.32);
+        });
+        b.addEventListener('pointerleave', function () { qx(0); qy(0); });
+      });
+      var cur = d.createElement('div');
+      cur.className = 'kd-cursor';
+      cur.setAttribute('aria-hidden', 'true');
+      d.body.appendChild(cur);
+      var cx = gsap.quickTo(cur, 'x', { duration: 0.45, ease: 'power3.out' });
+      var cy = gsap.quickTo(cur, 'y', { duration: 0.45, ease: 'power3.out' });
+      d.addEventListener('pointermove', function (e) { cur.classList.add('is-on'); cx(e.clientX); cy(e.clientY); });
+      d.addEventListener('pointerleave', function () { cur.classList.remove('is-on'); });
+      d.addEventListener('pointerover', function (e) {
+        cur.classList.toggle('is-link', !!e.target.closest('a, button, summary, [role="tab"], label, input, select, textarea'));
+      });
+    }
+
+    window.addEventListener('load', function () { ST.refresh(); });
+  }
+
+  var fontsReady = d.fonts && d.fonts.ready ? d.fonts.ready : Promise.resolve();
+  var done = false;
+  function go() { if (done) return; done = true; init(); }
+  Promise.race([fontsReady, new Promise(function (r) { setTimeout(r, 900); })]).then(go);
+})();
