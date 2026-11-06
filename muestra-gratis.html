@@ -44,13 +44,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="stylesheet" href="assets/kd.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700;800&amp;family=DM+Sans:opsz,wght@9..40,400;9..40,500&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700;800&amp;family=DM+Sans:opsz,wght@9..40,400;9..40,500&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" onload="this.onload=null;this.rel=\'stylesheet\'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700;800&amp;family=DM+Sans:opsz,wght@9..40,400;9..40,500&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap"></noscript>
 <style>
 body{margin:0;background:#143E46}
 a{color:#1C5A63}a:hover{color:#0F2F35}
 .tabs{display:flex;flex-wrap:wrap;gap:10px}
 .tab{font-family:'Barlow',sans-serif;font-weight:600;font-size:16px;min-height:48px;padding:0 20px;border-radius:999px;border:1.5px solid #1C5A63;background:transparent;color:#1C5A63;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background .2s ease,color .2s ease}
-.tab small{font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
+.tab small{font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.9}
 .tab:hover{background:rgba(28,90,99,.08)}
 .tab.on{background:#1C5A63;color:#F7F5EE}
 .panel{background:#FFFFFF;border:1px solid #DAD6CB;border-radius:16px;padding:clamp(24px,3vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:40px;align-items:start}
@@ -67,19 +68,26 @@ a{color:#1C5A63}a:hover{color:#0F2F35}
 .copy:hover{background:#1C5A63;color:#F7F5EE}
 @media (max-width:700px){.qr{display:none}}
 </style>
-<link rel="stylesheet" href="assets/kd-tech.css?v=20261105b">
+<link rel="stylesheet" href="assets/kd-tech.css?v=20261105c">
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5GH3MTMJ"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+<!-- Aviso de cookies (Consent Mode v2) -->
+<div id="kuntur-consent" role="dialog" aria-label="Preferencias de cookies" hidden>
+<p class="kc-t">Cookies y analítica</p>
+<p>Usamos cookies de analítica de Google para saber qué partes del sitio se leen y corregirlo. No las usamos para mostrarte anuncios. <a href="privacidad.html#analitica">Política de privacidad</a></p>
+<div class="kc-botones"><button type="button" data-consent="denied">Rechazar</button><button type="button" data-consent="granted" class="kc-aceptar">Aceptar</button></div>
+</div>
+<script>(function(){var b=document.getElementById('kuntur-consent'),s=null;try{s=localStorage.getItem('kuntur_consent')}catch(e){}if(!s)b.hidden=false})();</script>
 <div class="kd" id="top">
 <a class="skip" href="#contenido">Saltar al contenido</a>
 
 <header class="on-dark" style="padding-top: 28px; padding-bottom: 28px;">
 <div class="wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 24px;">
-<a href="index.html" aria-label="Kuntur Data, inicio" style="display: inline-flex;"><img src="assets/logo/kuntur-data-horizontal-negativo.svg" alt="Kuntur Data" style="height: 40px; width: auto; display: block;"></a>
+<a href="index.html" aria-label="Kuntur Data, inicio" style="display: inline-flex;"><img width="749" height="180" src="assets/logo/kuntur-data-horizontal-negativo.svg" alt="Kuntur Data" style="height: 40px; width: auto; display: block;"></a>
 <ol class="crumb" aria-label="Ruta"><li><a href="index.html">Inicio</a></li><li aria-hidden="true">›</li><li aria-current="page" style="color: #F7F5EE;">Muestra gratis</li></ol>
 </div>
 </header>
@@ -113,7 +121,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </dl>
 <div style="display: flex; flex-direction: column; gap: 18px;">
 <a class="btn btn-gold" href="#" id="m-wa" style="justify-content: center;">Pedir por WhatsApp <span class="ar" aria-hidden="true">→</span></a>
-<div class="qr"><img src="" id="m-qr" alt="Código QR para escribir por WhatsApp"><p>¿Está en una computadora? Escanee con su celular y el mensaje se escribe solo.</p></div>
+<div class="qr"><img width="53" height="53" src="" id="m-qr" alt="Código QR para escribir por WhatsApp"><p>¿Está en una computadora? Escanee con su celular y el mensaje se escribe solo.</p></div>
 <a class="dl" href="#" id="m-pdf" download><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12"></path><path d="M7 10l5 5 5-5"></path><path d="M5 21h14"></path></svg><div>Descargar la muestra de ejemplo<br><span><span id="m-brand"></span> · Ejemplo con datos ficticios · PDF</span></div></a>
 </div>
 </div>
@@ -154,7 +162,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <footer class="foot" style="padding-top: 96px; padding-bottom: 140px;">
 <div class="wrap" style="display: flex; flex-direction: column; gap: 56px;">
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 40px;">
-<div style="display: flex; flex-direction: column; gap: 16px;"><img src="assets/logo/kuntur-data-vertical-negativo.svg" alt="Kuntur Data. Perspectiva analítica y estrategia software" style="width: 190px; height: auto; display: block;"><p style="margin: 0; font-size: 14px; line-height: 1.5;">Lima, Perú · Trabajo 100 % remoto</p></div>
+<div style="display: flex; flex-direction: column; gap: 16px;"><img width="655" height="646" src="assets/logo/kuntur-data-vertical-negativo.svg" alt="Kuntur Data. Perspectiva analítica y estrategia software" style="width: 190px; height: auto; display: block;"><p style="margin: 0; font-size: 14px; line-height: 1.5;">Lima, Perú · Trabajo 100 % remoto</p></div>
 <div><h3>Kuntur</h3><ul><li><a href="kuntur.html">Campañas y medición</a></li><li><a href="kuntur.html">Atención por WhatsApp</a></li><li><a href="kuntur.html">Visibilidad en IA</a></li></ul></div>
 <div><h3>Lupa UX</h3><ul><li><a href="lupa-ux.html">Auditoría UX</a></li><li><a href="lupa-ux.html">Arquitectura de información</a></li></ul></div>
 <div><h3>Empresa</h3><ul><li><a href="agencias.html">Para agencias</a></li><li><a href="metodo.html">Método</a></li><li><a href="integraciones.html">Integraciones y uso de APIs</a></li><li><a href="muestra-gratis.html">Muestra gratis</a></li></ul></div>
@@ -169,7 +177,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="dock">
 <nav class="bar" aria-label="Principal">
-<a href="index.html" aria-label="Kuntur Data, inicio" style="display: inline-flex; padding-right: 8px;"><img class="sym" src="assets/logo/kuntur-data-simbolo-crema.svg" alt=""></a>
+<a href="index.html" aria-label="Kuntur Data, inicio" style="display: inline-flex; padding-right: 8px;"><img width="555" height="370" class="sym" src="assets/logo/kuntur-data-simbolo-crema.svg" alt=""></a>
 <div class="bl">
 <a href="kuntur.html">Kuntur</a>
 <a href="lupa-ux.html">Lupa UX</a>
@@ -201,6 +209,6 @@ var cb=document.getElementById('copyBtn');cb.addEventListener('click',function()
 <script src="assets/vendor/SplitText.min.js" defer></script>
 <script src="assets/vendor/ScrambleTextPlugin.min.js" defer></script>
 <script src="assets/vendor/lenis.min.js" defer></script>
-<script src="assets/kd.js" defer></script>
+<script src="assets/kd.js?v=20261105c" defer></script>
 </body>
 </html>

@@ -149,7 +149,10 @@
 
   /* ---------- 2. Aviso de cookies (Consent Mode v2) ---------- */
   (function consent() {
-    var box = d.createElement('div');
+    // El aviso viene escrito en el HTML (se muestra antes de que cargue este archivo); si falta, se crea aquí.
+    var box = d.getElementById('kuntur-consent');
+    if (!box) {
+    box = d.createElement('div');
     box.id = 'kuntur-consent';
     box.setAttribute('role', 'dialog');
     box.setAttribute('aria-label', 'Preferencias de cookies');
@@ -160,6 +163,7 @@
       '<div class="kc-botones"><button type="button" data-consent="denied">Rechazar</button>' +
       '<button type="button" data-consent="granted" class="kc-aceptar">Aceptar</button></div>';
     d.body.appendChild(box);
+    }
     var stored = null;
     try { stored = localStorage.getItem('kuntur_consent'); } catch (e) {}
     if (!stored) box.hidden = false;
@@ -337,14 +341,8 @@
         gsap.fromTo(cEl, { opacity: 0.12 }, { opacity: 0.9, duration: 1.6 + Math.random() * 2.4, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: Math.random() * 2 });
       });
       if (inner) {
-        gsap.set(inner, { opacity: 1 });
-        inner.classList.remove('kd-pre');
-        var tl = gsap.timeline({ delay: 0.15 });
-        var h1 = inner.querySelector('h1');
-        var rest = Array.prototype.filter.call(inner.children, function (c) { return c !== h1 && !c.classList.contains('eti'); });
-        inner.querySelectorAll('.eti').forEach(function (e, i) { tl.add(scramble(e), i * 0.1); });
-        if (h1) tl.add(splitLines(h1, { duration: 1.5, stagger: 0.11 }) || gsap.from(h1, { opacity: 0 }), 0.1);
-        if (rest.length) tl.from(rest, { opacity: 0, y: 28, duration: 1.3, stagger: 0.1 }, 0.55);
+        // La entrada del texto es CSS (kd-tech.css, .kd-pre): no depende de este script, así el LCP no espera al JS.
+        inner.querySelectorAll('.eti').forEach(function (e, i) { scramble(e, 0.15 + i * 0.1); });
       }
       var topo = hero.querySelector('.topo, .topo-s');
       var hx = hero.querySelector(':scope > .wrap');
@@ -433,6 +431,9 @@
     });
     // evitar animar un hijo y su contenedor a la vez
     els = els.filter(function (el) { return !els.some(function (o) { return o !== el && o.contains(el); }); });
+    // Lo que ya está en pantalla al cargar no se oculta (no retrasa el LCP ni parpadea).
+    var vh = window.innerHeight;
+    els = els.filter(function (el) { return el.getBoundingClientRect().top > vh * 0.92; });
     gsap.set(els, { opacity: 0, y: 34 });
     ST.batch(els, {
       start: 'top 92%', once: true,
@@ -537,5 +538,5 @@
   var fontsReady = d.fonts && d.fonts.ready ? d.fonts.ready : Promise.resolve();
   var done = false;
   function go() { if (done) return; done = true; init(); }
-  Promise.race([fontsReady, new Promise(function (r) { setTimeout(r, 900); })]).then(go);
+  go(); // sin esperar fuentes: SplitText re-divide solo cuando cargan (autoSplit)
 })();
