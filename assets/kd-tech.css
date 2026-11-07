@@ -189,3 +189,9 @@ html.lenis,html.lenis body{height:auto}
 .legal tr:has(td:nth-child(3)) td:first-child{font-family:'Barlow',system-ui,sans-serif;font-weight:700;font-size:18px}
 }
 @media (max-width:700px){.lg-hero{min-height:100svh!important;align-items:center;padding-top:120px;padding-bottom:120px}}
+
+/* Barra inferior en celular: el CTA «Pedir diagnóstico inicial» en una sola línea (7 nov 2026) */
+@media (max-width:480px){.bar .btn{white-space:nowrap;padding:0 14px;font-size:14px}.bar{gap:4px}}
+@media (max-width:374px){.bar .btn{padding:0 10px;font-size:13px}}
+.bar .cta-sh{display:none}
+@media (max-width:480px){.bar .cta-lg{display:none}.bar .cta-sh{display:inline}}

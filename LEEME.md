@@ -14,7 +14,8 @@ Abra `index.html` en el navegador. Las 7 páginas están enlazadas entre sí y n
 | agencias.html | Para agencias | /agencias/ |
 | metodo.html | Método | /metodo/ |
 | integraciones.html | Integraciones y uso de APIs | /integraciones/ |
-| muestra-gratis.html | Muestra gratis | /muestra-gratis/ |
+| diagnostico-inicial.html | Diagnóstico inicial | /diagnostico-inicial.html |
+| muestra-gratis.html | Redirección a diagnostico-inicial.html (meta refresh + JS; GitHub Pages no permite 301) | — |
 
 ## Carpetas
 
@@ -30,7 +31,7 @@ Abra `index.html` en el navegador. Las 7 páginas están enlazadas entre sí y n
 - Animaciones: GSAP 3.15 (ScrollTrigger, SplitText, ScrambleText) y Lenis 1.3, servidos desde `assets/vendor` (sin CDN). Lógica en `assets/kd.js` y estilos de la capa tecnológica en `assets/kd-tech.css`. Funcionan en todos los navegadores modernos.
 - El relieve del hero es procedural. En producción debe reemplazarse por datos de elevación reales y, como mejora, por la escena WebGL definida en la Fase 6.
 - Privacidad (`privacidad.html`) y Condiciones (`terminos.html`) integradas con el texto íntegro del sitio anterior y las mismas URL. La política de cookies vive en la sección 10 de Privacidad (`privacidad.html#analitica`) hasta que el asesor legal entregue una propia.
-- Medición: todas las páginas cargan Google Tag Manager (GTM-5GH3MTMJ) con Consent Mode v2 por defecto en «denegado», el aviso de cookies y los eventos `contact_click`, `cta_click`, `copy_email` y `consent_update`. Cada página envía su `content_group` (home, kuntur, lupa_ux, agencias, metodo, integraciones, muestra_gratis, legal).
+- Medición: todas las páginas cargan Google Tag Manager (GTM-5GH3MTMJ) con Consent Mode v2 por defecto en «denegado», el aviso de cookies y los eventos `contact_click`, `cta_click`, `copy_email` y `consent_update`. Cada página envía su `content_group` (home, kuntur, lupa_ux, agencias, metodo, integraciones, muestra_gratis, legal). La página diagnostico-inicial.html conserva `muestra_gratis` y los botones renombrados conservan `data-cta="pedir_muestra_gratis"` para no cortar el histórico.
 - Respeta `prefers-reduced-motion`: sin animaciones cuando el usuario lo pide.
 
 ## Documentos
