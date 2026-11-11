@@ -1,0 +1,172 @@
+From fef5f7038b3faa584931f2230c9bcf0e68bccc8c Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Wed, 11 Nov 2026 13:14:16 -0500
+Subject: [PATCH] =?UTF-8?q?Protecci=C3=B3n=20de=20clientes=20de=20agencias?=
+ =?UTF-8?q?=20(preparado,=20no=20publicar=20hasta=20el=20aviso)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- agencias.html: sección «Nuestra regla» con id nuestra-regla, bajada, 3 tarjetas y texto al pie (con la frase acotada «No hacemos campañas ni webs para sus clientes.»)
+- agencias.html: nueva respuesta a «¿Mi cliente puede contratarlos directamente?» y pregunta nueva sobre prospectos
+- index.html: enlace «Cómo lo cumplimos →» a agencias.html#nuestra-regla
+- terminos.html: sección 8 «Marcas presentadas por una agencia», renumeración 9 a 13 y fecha de actualización
+- sitemap.xml: lastmod de las 3 páginas
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01QDccQMGDNxRqeJpW7cA429
+---
+ agencias.html | 13 ++++++++++---
+ index.html    |  2 +-
+ sitemap.xml   |  6 +++---
+ terminos.html | 33 ++++++++++++++++++++++-----------
+ 4 files changed, 36 insertions(+), 18 deletions(-)
+
+diff --git a/agencias.html b/agencias.html
+index f68b5df..caf4642 100644
+--- a/agencias.html
++++ b/agencias.html
+@@ -122,11 +122,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ </div>
+ </section>
+ 
+-<section class="deep on-dark sec" aria-labelledby="h-comp" style="text-align: center;">
++<section id="nuestra-regla" class="deep on-dark sec" aria-labelledby="h-comp" style="text-align: center; scroll-margin-top: 80px;">
+ <div class="wrap" style="display: flex; flex-direction: column; align-items: center; gap: 22px;">
+ <p class="eti">Nuestra regla</p>
+ <h2 id="h-comp" class="h2 lit-d" style="font-size: clamp(38px, 5.4vw, 76px); font-weight: 800;">No competimos con usted.</h2>
+-<p class="lead rv" style="max-width: 640px;">Ni con su cliente, durante la relación ni 12 meses después. No hacemos campañas ni webs para sus clientes.</p>
++<p class="lead rv" style="max-width: 680px;">Si una marca llegó a través de su agencia, no le ofrecemos servicios por fuera de ella. Para que esta regla se pueda verificar, registramos cada marca que nos presenta.</p>
++<div class="g3" style="width: 100%; margin-top: 26px; text-align: left;">
++<div class="card-d rv"><h3 class="h3">Registramos su cliente con fecha</h3><p class="p">Cuando nos pide un diagnóstico o un servicio para una marca, la registramos a nombre de su agencia, con la fecha y el sitio. Ese registro define quién la presentó primero.</p></div>
++<div class="card-d rv"><h3 class="h3">Si la marca nos busca, le avisamos</h3><p class="p">Si una marca registrada nos contacta directamente, no le cotizamos. Le avisamos a su agencia en un máximo de un día hábil y la atendemos a través de usted. Vale para los dos productos: si nos presentó la marca con Lupa UX, el seguimiento con Kuntur también pasa por su agencia.</p></div>
++<div class="card-d rv"><h3 class="h3">Plazos claros</h3><p class="p">Marca con servicio contratado a través de su agencia: durante la relación y 12 meses después.</p><p class="p">Prospecto con diagnóstico, sin servicio contratado: 6 meses desde el registro.</p><p class="p">Cada diagnóstico o servicio nuevo sobre ese sitio renueva el plazo.</p></div>
++</div>
++<p class="p rv" style="max-width: 640px; margin-top: 18px;">No hacemos campañas ni webs para sus clientes. Si una marca deja de trabajar con su agencia, se lo informamos antes de cotizarle.</p>
+ </div>
+ </section>
+ 
+@@ -151,8 +157,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ <div style="grid-column: span 2 / auto; min-width: 0;">
+ <details><summary>¿Puedo ofrecerlo a mis clientes?<span class="pl" aria-hidden="true">+</span></summary><p>Sí, dentro de su propuesta o como servicio adicional.</p></details>
+ <details><summary>¿Quién entrega el informe al cliente?<span class="pl" aria-hidden="true">+</span></summary><p>Usted. Nosotros lo preparamos y lo revisamos.</p></details>
+-<details><summary>¿Mi cliente puede contratarlos directamente?<span class="pl" aria-hidden="true">+</span></summary><p>Si llegó a través de su agencia, no le ofrecemos servicios por fuera de ella.</p></details>
++<details><summary>¿Mi cliente puede contratarlos directamente?<span class="pl" aria-hidden="true">+</span></summary><p>No. Si llegó a través de su agencia, no le ofrecemos servicios por fuera de ella: le avisamos a usted y la atendemos a través de su agencia. Solo la atendemos directamente si usted lo autoriza por escrito.</p></details>
+ <details><summary>¿Puedo pedir diagnósticos de mis prospectos?<span class="pl" aria-hidden="true">+</span></summary><p>Sí. En Lupa UX, diagnósticos del home de hasta 5 prospectos por día.</p></details>
++<details><summary>¿Qué pasa con los prospectos para los que pido diagnóstico?<span class="pl" aria-hidden="true">+</span></summary><p>Quedan registrados a nombre de su agencia por 6 meses. Si en ese plazo la marca nos busca, le avisamos a usted. Cada diagnóstico o servicio nuevo sobre ese sitio renueva el plazo.</p></details>
+ <details><summary>¿Mi equipo puede quitar un hallazgo?<span class="pl" aria-hidden="true">+</span></summary><p>No. Puede sumar comentarios, pero el informe va completo.</p></details>
+ </div>
+ </div>
+diff --git a/index.html b/index.html
+index 70c2428..37c7282 100644
+--- a/index.html
++++ b/index.html
+@@ -253,7 +253,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ <div class="rv" style="display: flex; flex-direction: column; gap: 10px;"><h3 style="margin: 0; font-size: 22px; font-weight: 600; color: #1C5A63;">Cada cifra con su base</h3><p style="margin: 0; font-size: 16px; line-height: 1.6; color: #55666A;">Nunca un porcentaje suelto: siempre de cuántos.</p></div>
+ <div class="rv" style="display: flex; flex-direction: column; gap: 10px;"><h3 style="margin: 0; font-size: 22px; font-weight: 600; color: #1C5A63;">El informe va completo</h3><p style="margin: 0; font-size: 16px; line-height: 1.6; color: #55666A;">Nadie quita hallazgos ni cambia una cifra después.</p></div>
+ <div class="rv" style="display: flex; flex-direction: column; gap: 10px;"><h3 style="margin: 0; font-size: 22px; font-weight: 600; color: #1C5A63;">Lo que no se pudo medir, se dice</h3><p style="margin: 0; font-size: 16px; line-height: 1.6; color: #55666A;">Si el volumen no alcanza, el informe lo declara en lugar de imprimir un cero.</p></div>
+-<div class="rv" style="display: flex; flex-direction: column; gap: 10px;"><h3 style="margin: 0; font-size: 22px; font-weight: 600; color: #1C5A63;">No competimos con usted</h3><p style="margin: 0; font-size: 16px; line-height: 1.6; color: #55666A;">Ni con su cliente, durante la relación ni 12 meses después.</p></div>
++<div class="rv" style="display: flex; flex-direction: column; gap: 10px;"><h3 style="margin: 0; font-size: 22px; font-weight: 600; color: #1C5A63;">No competimos con usted</h3><p style="margin: 0; font-size: 16px; line-height: 1.6; color: #55666A;">Ni con su cliente, durante la relación ni 12 meses después.</p><a class="lkt" href="agencias.html#nuestra-regla">Cómo lo cumplimos <span aria-hidden="true">→</span></a></div>
+ </div>
+ </div>
+ </section>
+diff --git a/sitemap.xml b/sitemap.xml
+index 3ea71d8..6887230 100644
+--- a/sitemap.xml
++++ b/sitemap.xml
+@@ -1,12 +1,12 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+-  <url><loc>https://kunturdata.com/</loc><lastmod>2026-11-07</lastmod></url>
++  <url><loc>https://kunturdata.com/</loc><lastmod>2026-11-11</lastmod></url>
+   <url><loc>https://kunturdata.com/kuntur.html</loc><lastmod>2026-11-07</lastmod></url>
+   <url><loc>https://kunturdata.com/lupa-ux.html</loc><lastmod>2026-11-07</lastmod></url>
+-  <url><loc>https://kunturdata.com/agencias.html</loc><lastmod>2026-11-07</lastmod></url>
++  <url><loc>https://kunturdata.com/agencias.html</loc><lastmod>2026-11-11</lastmod></url>
+   <url><loc>https://kunturdata.com/metodo.html</loc><lastmod>2026-11-07</lastmod></url>
+   <url><loc>https://kunturdata.com/integraciones.html</loc><lastmod>2026-11-07</lastmod></url>
+   <url><loc>https://kunturdata.com/diagnostico-inicial.html</loc><lastmod>2026-11-07</lastmod></url>
+   <url><loc>https://kunturdata.com/privacidad.html</loc><lastmod>2026-11-07</lastmod></url>
+-  <url><loc>https://kunturdata.com/terminos.html</loc><lastmod>2026-11-07</lastmod></url>
++  <url><loc>https://kunturdata.com/terminos.html</loc><lastmod>2026-11-11</lastmod></url>
+ </urlset>
+diff --git a/terminos.html b/terminos.html
+index 4054609..762a3a9 100644
+--- a/terminos.html
++++ b/terminos.html
+@@ -82,7 +82,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ <p class="eti">Legal · Condiciones del servicio</p>
+ <h1 id="h1" class="h1">Condiciones del servicio</h1>
+ <p class="lead" style="max-width: 640px;">Condiciones bajo las que se presta el servicio de análisis de campañas publicitarias KUNTUR.</p>
+-<ul class="lg-meta"><li><b>KUNTUR · Última actualización: 3 de septiembre de 2026</b></li><li>Ley aplicable · Perú</li></ul>
++<ul class="lg-meta"><li><b>KUNTUR · Última actualización: 11 de noviembre de 2026</b></li><li>Ley aplicable · Perú</li></ul>
+ </div>
+ </div>
+ </section>
+@@ -98,11 +98,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ <a href="#uso-de-inteligencia-artificial"><span>05</span>Uso de inteligencia artificial</a>
+ <a href="#propiedad"><span>06</span>Propiedad</a>
+ <a href="#confidencialidad"><span>07</span>Confidencialidad</a>
+-<a href="#limitacion-de-responsabilidad"><span>08</span>Limitación de responsabilidad</a>
+-<a href="#precio-vigencia-y-terminacion"><span>09</span>Precio, vigencia y terminación</a>
+-<a href="#cambios"><span>10</span>Cambios</a>
+-<a href="#ley-aplicable"><span>11</span>Ley aplicable</a>
+-<a href="#contacto"><span>12</span>Contacto</a>
++<a href="#marcas-presentadas-por-una-agencia"><span>08</span>Marcas presentadas por una agencia</a>
++<a href="#limitacion-de-responsabilidad"><span>09</span>Limitación de responsabilidad</a>
++<a href="#precio-vigencia-y-terminacion"><span>10</span>Precio, vigencia y terminación</a>
++<a href="#cambios"><span>11</span>Cambios</a>
++<a href="#ley-aplicable"><span>12</span>Ley aplicable</a>
++<a href="#contacto"><span>13</span>Contacto</a>
+ </nav>
+ <article class="legal">
+ <section id="quien-presta-el-servicio" aria-labelledby="quien-presta-el-servicio-t">
+@@ -152,30 +153,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ <p>El proveedor mantiene en reserva la información de negocio del cliente y sus datos de campañas. No los comparte con terceros ni los utiliza como referencia pública sin autorización escrita del cliente.</p>
+ </section>
+ 
++<section id="marcas-presentadas-por-una-agencia" aria-labelledby="marcas-presentadas-por-una-agencia-t">
++<h2 id="marcas-presentadas-por-una-agencia-t"><span class="n">08</span>Marcas presentadas por una agencia</h2>
++<p>8.1. Cuando una agencia solicita un diagnóstico o contrata un servicio para una marca, Kuntur Data registra esa marca a nombre de la agencia, con la fecha de la solicitud y el sitio web o la cuenta correspondiente.</p>
++<p>8.2. Mientras el registro esté vigente, Kuntur Data no ofrecerá ni prestará a esa marca, de forma directa o por medio de terceros, los servicios de Kuntur ni de Lupa UX sin autorización escrita de la agencia.</p>
++<p>8.3. El registro está vigente: (a) si la marca tiene un servicio contratado a través de la agencia, mientras dure ese servicio y durante los 12 meses siguientes a su término; (b) si la marca solo recibió un diagnóstico, durante los 6 meses siguientes al último diagnóstico o servicio solicitado por la agencia.</p>
++<p>8.4. Si una marca registrada contacta directamente a Kuntur Data, Kuntur Data informará a la agencia en un plazo máximo de un día hábil.</p>
++<p>8.5. Si la marca comunica que terminó su relación con la agencia, Kuntur Data lo informará a la agencia antes de ofrecerle servicios.</p>
++<p>8.6. Si dos agencias presentan la misma marca, prevalece el registro con fecha anterior.</p>
++</section>
++
+ <section id="limitacion-de-responsabilidad" aria-labelledby="limitacion-de-responsabilidad-t">
+-<h2 id="limitacion-de-responsabilidad-t"><span class="n">08</span>Limitación de responsabilidad</h2>
++<h2 id="limitacion-de-responsabilidad-t"><span class="n">09</span>Limitación de responsabilidad</h2>
+ <p>El proveedor responde por la diligencia con la que presta el servicio, no por los resultados comerciales del cliente. No asume responsabilidad por decisiones de inversión publicitaria tomadas por el cliente, por interrupciones o cambios en las APIs de las plataformas, ni por lucro cesante.</p>
+ <p>En cualquier caso, la responsabilidad total del proveedor está limitada al monto efectivamente pagado por el cliente por el servicio en los tres meses anteriores al hecho que la origine.</p>
+ </section>
+ 
+ <section id="precio-vigencia-y-terminacion" aria-labelledby="precio-vigencia-y-terminacion-t">
+-<h2 id="precio-vigencia-y-terminacion-t"><span class="n">09</span>Precio, vigencia y terminación</h2>
++<h2 id="precio-vigencia-y-terminacion-t"><span class="n">10</span>Precio, vigencia y terminación</h2>
+ <p>El precio, la periodicidad y el alcance de cada servicio se acuerdan por escrito con cada cliente antes de iniciarlo. Estas condiciones complementan ese acuerdo; en caso de discrepancia, prevalece lo pactado por escrito con el cliente.</p>
+ <p>Cualquiera de las partes puede terminar la relación comunicándolo por escrito. El cliente puede revocar el acceso a sus cuentas en cualquier momento y de forma inmediata desde sus propios paneles de Google, Meta o TikTok.</p>
+ </section>
+ 
+ <section id="cambios" aria-labelledby="cambios-t">
+-<h2 id="cambios-t"><span class="n">10</span>Cambios</h2>
++<h2 id="cambios-t"><span class="n">11</span>Cambios</h2>
+ <p>Estas condiciones pueden actualizarse. Los cambios se publican en esta dirección con la fecha visible en la cabecera, y los sustanciales se comunican por correo a los clientes activos.</p>
+ </section>
+ 
+ <section id="ley-aplicable" aria-labelledby="ley-aplicable-t">
+-<h2 id="ley-aplicable-t"><span class="n">11</span>Ley aplicable</h2>
++<h2 id="ley-aplicable-t"><span class="n">12</span>Ley aplicable</h2>
+ <p>Estas condiciones se rigen por las leyes de la República del Perú. Cualquier controversia se somete a los jueces y tribunales del distrito judicial de Lima.</p>
+ </section>
+ 
+ <section id="contacto" aria-labelledby="contacto-t">
+-<h2 id="contacto-t"><span class="n">12</span>Contacto</h2>
++<h2 id="contacto-t"><span class="n">13</span>Contacto</h2>
+ <p> <strong>Carlos Augusto Espinoza</strong> <br /> <a href="mailto:carlos@kunturdata.com">carlos@kunturdata.com</a> — Lima, Perú.</p>
+ </section>
+ <div class="lg-foot">
+-- 
+2.43.0
+

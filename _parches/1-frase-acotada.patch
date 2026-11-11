@@ -1,0 +1,75 @@
+From 2ec48e8d0af8a8d805d2d71926383a45a057dc76 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Wed, 11 Nov 2026 13:14:16 -0500
+Subject: [PATCH] =?UTF-8?q?Cambia=20las=20frases=20absolutas=20=C2=ABno=20?=
+ =?UTF-8?q?desarrollamos=20sitios=C2=BB=20por=20la=20versi=C3=B3n=20acotad?=
+ =?UTF-8?q?a?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- agencias.html: «No hacemos campañas ni webs para sus clientes.»
+- lupa-ux.html: misma frase en el bloque para agencias; la pregunta frecuente pasa a describir el alcance de Lupa UX
+- metodo.html: «Auditamos. La ejecución es suya.» sin afirmaciones absolutas
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01QDccQMGDNxRqeJpW7cA429
+---
+ agencias.html | 2 +-
+ lupa-ux.html  | 4 ++--
+ metodo.html   | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/agencias.html b/agencias.html
+index ad4d4b7..f68b5df 100644
+--- a/agencias.html
++++ b/agencias.html
+@@ -126,7 +126,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ <div class="wrap" style="display: flex; flex-direction: column; align-items: center; gap: 22px;">
+ <p class="eti">Nuestra regla</p>
+ <h2 id="h-comp" class="h2 lit-d" style="font-size: clamp(38px, 5.4vw, 76px); font-weight: 800;">No competimos con usted.</h2>
+-<p class="lead rv" style="max-width: 640px;">Ni con su cliente, durante la relación ni 12 meses después. No ejecutamos campañas ni desarrollamos sitios.</p>
++<p class="lead rv" style="max-width: 640px;">Ni con su cliente, durante la relación ni 12 meses después. No hacemos campañas ni webs para sus clientes.</p>
+ </div>
+ </section>
+ 
+diff --git a/lupa-ux.html b/lupa-ux.html
+index a5ac4f4..d78850e 100644
+--- a/lupa-ux.html
++++ b/lupa-ux.html
+@@ -215,7 +215,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ <h2 id="h-arq" class="h2" style="font-size: clamp(28px, 3vw, 40px);">Cuando no basta con corregir: hay que reordenar.</h2>
+ <p class="p">Arquitectura de información: un cuestionario simple, la propuesta de menú y secciones con la fuente de cada decisión, wireframes y un PDF para el cliente. Lo que falta no se inventa: queda para que el cliente lo confirme.</p>
+ </div>
+-<div class="note rv" style="grid-column: 1 / -1;"><p class="eti" style="font-size: 12px; margin-bottom: 8px;">Qué no hacemos</p><p class="p">No diseñamos la versión final, no desarrollamos el sitio ni subcontratamos el rediseño. Si su cliente llegó a través de una agencia, no le ofrecemos servicios por fuera de ella.</p></div>
++<div class="note rv" style="grid-column: 1 / -1;"><p class="eti" style="font-size: 12px; margin-bottom: 8px;">Qué no hacemos</p><p class="p">No hacemos campañas ni webs para sus clientes. Si su cliente llegó a través de una agencia, no le ofrecemos servicios por fuera de ella.</p></div>
+ </div>
+ </section>
+ 
+@@ -225,7 +225,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ <div style="grid-column: span 2 / auto; min-width: 0;">
+ <details><summary>¿Tengo que instalar algo?<span class="pl" aria-hidden="true">+</span></summary><p>No. Auditamos el sitio público.</p></details>
+ <details><summary>¿Necesitan Analytics?<span class="pl" aria-hidden="true">+</span></summary><p>No. Si lo conecta, en solo lectura, sumamos datos reales de uso.</p></details>
+-<details><summary>¿Diseñan o desarrollan el sitio?<span class="pl" aria-hidden="true">+</span></summary><p>No. Documentamos qué cambiar y por qué. El diseño y el desarrollo son de su equipo.</p></details>
++<details><summary>¿Lupa UX incluye el diseño o el desarrollo del sitio?<span class="pl" aria-hidden="true">+</span></summary><p>No. Lupa UX es una auditoría: documenta qué cambiar y por qué. El diseño y el desarrollo los hace su equipo o su agencia.</p></details>
+ <details><summary>¿Quién revisa los hallazgos?<span class="pl" aria-hidden="true">+</span></summary><p>En el informe completo, un especialista. El diagnóstico inicial pasa por una revisión automática de calidad.</p></details>
+ <details><summary>¿Cuánto tarda?<span class="pl" aria-hidden="true">+</span></summary><p>Máximo 2 días hábiles desde que recibimos la información necesaria.</p></details>
+ <details><summary>¿Puedo pedir diagnósticos de varios prospectos?<span class="pl" aria-hidden="true">+</span></summary><p>Sí. Las agencias pueden pedir diagnósticos del home de hasta 5 prospectos por día.</p></details>
+diff --git a/metodo.html b/metodo.html
+index 2877da6..3bb9eb3 100644
+--- a/metodo.html
++++ b/metodo.html
+@@ -141,8 +141,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ <div class="wrap g2" style="align-items: start; gap: 48px;">
+ <div class="rv" style="display: flex; flex-direction: column; gap: 16px;">
+ <p class="eti">Qué no hacemos</p>
+-<h2 id="h-no" class="h2" style="font-size: clamp(28px, 3vw, 40px);">Medimos. No ejecutamos.</h2>
+-<ul class="list"><li>No ejecutamos campañas.</li><li>No desarrollamos sitios.</li><li>No ofrecemos servicios por fuera de la agencia de un cliente.</li></ul>
++<h2 id="h-no" class="h2" style="font-size: clamp(28px, 3vw, 40px);">Auditamos. La ejecución es suya.</h2>
++<ul class="list"><li>Medimos y recomendamos: los cambios los aplica su equipo o su agencia.</li><li>Si trabaja con una agencia, no le ofrecemos servicios por fuera de ella.</li></ul>
+ </div>
+ <div class="rv" style="display: flex; flex-direction: column; gap: 16px;">
+ <p class="eti">Por qué Kuntur</p>
+-- 
+2.43.0
+
