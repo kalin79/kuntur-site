@@ -9,7 +9,8 @@
 
   /* ---------- 1. Medición para GTM (capa de datos) ----------
      Eventos: contact_click, cta_click, copy_email, select_product, select_service,
-     download_sample, faq_open, view_contact_section, consent_update (sección 2).
+     download_sample, faq_open, view_contact_section, nav_click, consent_update (sección 2).
+     menu_toggle se envía desde kd-menu.js.
      Todos llevan content_group y service. Valores de service: kuntur_campanas,
      kuntur_whatsapp, kuntur_ia, kuntur, lupa_ux, general. */
   window.dataLayer = window.dataLayer || [];
@@ -81,6 +82,23 @@
     if (el.closest('footer')) return 'pie';
     return 'texto';
   }
+  // Zona de navegación del enlace: menú, secciones laterales, cabecera, pie o legales. null = no es navegación.
+  function navZone(el) {
+    if (el.closest('.nv-panel')) return 'nav_menu';
+    if (el.closest('.kd-legal')) return 'legal';
+    if (el.closest('.nv')) return null; // barra inferior: CTA y WhatsApp ya tienen su evento
+    var nav = el.closest('nav');
+    if (nav) return locationOf(el);
+    if (el.closest('header')) return 'header';
+    if (el.closest('footer')) return 'footer';
+    return null;
+  }
+  // Texto visible del enlace, sin los duplicados decorativos (aria-hidden).
+  function linkText(el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll('[aria-hidden="true"]').forEach(function (n) { n.remove(); });
+    return (c.textContent || el.getAttribute('aria-label') || '').replace(/\s+/g, ' ').trim().slice(0, 60);
+  }
   function slug(t) {
     return (t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
       .replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 48);
@@ -114,6 +132,10 @@
     }
     if (link.hasAttribute('data-cta')) {
       push({ event: 'cta_click', cta_text: link.getAttribute('data-cta'), cta_location: locationOf(link), service: product || serviceOf(link, href) });
+    }
+    var zone = href ? navZone(link) : null;
+    if (zone) {
+      push({ event: 'nav_click', link_text: linkText(link), link_url: href.slice(0, 100), link_location: zone, service: product || serviceOf(link, href) });
     }
   }, true);
   d.addEventListener('copy', function () {

@@ -1,6 +1,7 @@
 /* Menú inferior Kuntur Data (19 nov 2026)
    1) Abre y cierra el panel (botón de la barra, Esc, clic fuera, clic en un enlace).
-   2) Muestra en la barra el nombre de la sección visible, con un giro vertical al cambiar.
+   2) Mide apertura y cierre (menu_toggle).
+   3) Muestra en la barra el nombre de la sección visible, con un giro vertical al cambiar.
    Se carga antes de kd.js para leer las etiquetas antes de su animación de texto. */
 (function () {
   var d = document, nv = d.querySelector('.nv');
@@ -10,7 +11,17 @@
   var pageLabel = nv.getAttribute('data-page') || roll.textContent;
   var last = null;
 
-  function setOpen(o, focusBack) {
+  // Medición: apertura y cierre del menú (menu_toggle), con lo que lo provocó.
+  function track(o, via) {
+    window.dataLayer = window.dataLayer || [];
+    var cg = 'sin_definir';
+    for (var i = window.dataLayer.length - 1; i >= 0; i--) {
+      if (window.dataLayer[i] && window.dataLayer[i].content_group) { cg = window.dataLayer[i].content_group; break; }
+    }
+    window.dataLayer.push({ event: 'menu_toggle', menu_action: o ? 'abrir' : 'cerrar', menu_trigger: via, content_group: cg });
+  }
+  function setOpen(o, focusBack, via) {
+    if (o !== nv.classList.contains('is-open')) track(o, via);
     nv.classList.toggle('is-open', o);
     bar.setAttribute('aria-expanded', o ? 'true' : 'false');
     bar.setAttribute('aria-label', o ? 'Cerrar menú' : 'Abrir menú');
@@ -22,10 +33,10 @@
     } else if (focusBack) { bar.focus({ preventScroll: true }); }
   }
   panel.setAttribute('inert', '');
-  bar.addEventListener('click', function () { setOpen(!nv.classList.contains('is-open'), true); });
-  dim.addEventListener('click', function () { setOpen(false, false); });
-  d.addEventListener('keydown', function (e) { if (e.key === 'Escape' && nv.classList.contains('is-open')) setOpen(false, true); });
-  panel.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false, false); }); });
+  bar.addEventListener('click', function () { setOpen(!nv.classList.contains('is-open'), true, 'boton'); });
+  dim.addEventListener('click', function () { setOpen(false, false, 'fuera'); });
+  d.addEventListener('keydown', function (e) { if (e.key === 'Escape' && nv.classList.contains('is-open')) setOpen(false, true, 'esc'); });
+  panel.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false, false, 'enlace'); }); });
 
   // Título de la sección visible
   function show(t) {
