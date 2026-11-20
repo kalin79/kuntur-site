@@ -1,0 +1,97 @@
+/* Menú inferior Kuntur Data (19 nov 2026)
+   La barra se cierra sobre sí misma hasta quedar en un botón de cierre, y el panel crece desde ese botón.
+   Los enlaces suben escalonados desde una máscara. Respeta prefers-reduced-motion. */
+.nv{--h:56px;--rw:190px;--teal:#143E46;--glass:rgba(15,47,53,.94);--line:rgba(144,202,231,.22);--cream:#F7F5EE;--dim:rgba(247,245,238,.6);--sky:#90CAE7;--e-io:cubic-bezier(.76,0,.24,1);--e-out:cubic-bezier(.165,.84,.44,1);--dur:.6s;--grow:.5s;--show:.5s;--hide:.3s;position:sticky;bottom:16px;z-index:60;display:flex;justify-content:center;padding:0 16px;pointer-events:none}
+.nv *,.nv *::before,.nv *::after{box-sizing:border-box}
+
+/* Fondo que oscurece la página con el menú abierto */
+.nv-dim{position:fixed;inset:0;background:rgba(9,28,32,.45);opacity:0;pointer-events:none;transition:opacity var(--dur) var(--e-io)}
+.nv.is-open .nv-dim{opacity:1;pointer-events:auto}
+
+/* Fila inferior: barra + acciones */
+.nv-row{position:relative;display:flex;align-items:center;pointer-events:auto}
+
+/* Barra: símbolo · título de la sección · hamburguesa */
+.nv-bar{position:relative;width:calc(var(--h) * 2 + var(--rw));height:var(--h);padding:0;margin:0;border:0;background:none;color:var(--cream);cursor:pointer;font:inherit;display:block;clip-path:inset(0 0 round 16px);transition:clip-path var(--dur) var(--e-io)}
+.nv-bar__bg{position:absolute;inset:0;border-radius:16px;background:rgba(20,62,70,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid var(--line);box-shadow:0 18px 40px -12px rgba(0,0,0,.45)}
+.nv.is-open .nv-bar{clip-path:inset(0 calc(50% - var(--h) / 2) round 14px)}
+.nv-bar:focus-visible{outline:none}
+.nv-bar:focus-visible .nv-bar__bg{outline:2px solid var(--sky);outline-offset:2px}
+.nv-sym,.nv-burger{position:absolute;top:0;width:var(--h);height:var(--h);display:grid;place-items:center;transition:opacity .3s var(--e-io),transform var(--dur) var(--e-io)}
+.nv-sym{left:0}
+.nv-sym img{height:26px;width:auto;display:block}
+.nv-burger{right:0}
+.nv-burger svg{width:20px;height:11px;display:block}
+.nv.is-open .nv-sym{opacity:0;transform:translateX(80px)}
+.nv.is-open .nv-burger{opacity:0;transform:translateX(-80px)}
+.nv-roller{position:absolute;top:0;left:50%;width:var(--rw);height:var(--h);overflow:hidden;transform:translateX(-50%)}
+.nv-col{display:flex;flex-direction:column;transition:transform var(--dur) var(--e-io)}
+.nv.is-open .nv-col{transform:translateY(calc(-1 * var(--h)))}
+.nv-slot{flex:0 0 var(--h);height:var(--h);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.nv-slot svg{width:14px;height:14px}
+.nv-roll{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:'Barlow',system-ui,sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);padding:0 4px}
+.nv-roll.is-in{animation:nvRoll var(--dur) var(--e-out)}
+@keyframes nvRoll{from{transform:translateY(110%)}to{transform:translateY(0)}}
+.nv-bar:hover .nv-bar__bg{background:rgba(24,72,81,.94)}
+
+/* Acciones: CTA y WhatsApp. Se repliegan al abrir el menú */
+.nv-act{display:flex;align-items:center;gap:6px;margin-left:8px;max-width:420px;overflow:hidden;opacity:1;transition:max-width var(--dur) var(--e-io),margin var(--dur) var(--e-io),opacity .3s var(--e-io)}
+.nv.is-open .nv-act{max-width:0;margin-left:0;opacity:0;pointer-events:none}
+.nv-act .btn{min-height:var(--h);padding:0 22px;font-size:15px;white-space:nowrap;border-radius:16px}
+.nv-act .ico{width:var(--h);height:var(--h);border-radius:16px;background:rgba(20,62,70,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid var(--line);flex:none}
+.nv-act .cta-sh{display:none}
+.nv-act .btn-gold:hover{background:#F0C25E}
+
+/* Panel que crece desde la barra */
+.nv-panel{position:absolute;left:50%;bottom:calc(100% + 12px);width:440px;max-width:calc(100vw - 32px);transform:translateX(-50%);padding:56px 44px 36px;color:var(--cream);visibility:hidden;pointer-events:none;transition:visibility 0s linear calc(var(--hide) + var(--grow))}
+.nv.is-open .nv-panel{visibility:visible;pointer-events:auto;transition:visibility 0s linear}
+.nv-panel__bg{position:absolute;inset:0;z-index:-1;border-radius:20px;background:var(--glass);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line);box-shadow:0 30px 60px -20px rgba(0,0,0,.55);transform-origin:50% 100%;transform:scale(0);transition:transform var(--grow) var(--e-io) var(--hide)}
+.nv.is-open .nv-panel__bg{transform:scale(1);transition:transform var(--grow) var(--e-io) 0s}
+.nv-title{margin:0 0 18px;font-family:'Barlow',system-ui,sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sky);opacity:0;transition:opacity var(--hide) var(--e-io)}
+.nv.is-open .nv-title{opacity:1;transition:opacity var(--show) var(--e-io) var(--grow)}
+.nv-main{list-style:none;margin:0;padding:0}
+.nv-item{position:relative;display:flex;align-items:center}
+.nv-item::before{content:"";position:absolute;left:-20px;width:6px;height:6px;background:#E8B348;transform:rotate(45deg);opacity:0;transition:opacity .25s}
+.nv.is-open .nv-item:has([aria-current="page"])::before{opacity:1;transition:opacity var(--show) var(--e-io) calc(var(--grow) + .2s)}
+.nv-mask{display:flex;width:100%;height:46px;overflow:hidden}
+.nv-link{display:block;width:100%;height:46px;color:var(--cream);text-decoration:none;transform:translateY(150%);will-change:transform;transition:transform var(--hide) var(--e-io),color .4s}
+.nv.is-open .nv-link{transform:translateY(0);transition:transform var(--show) var(--e-out) calc(var(--grow) + var(--i) * 45ms),color .4s}
+.nv-line{display:block;height:46px;line-height:46px;font-family:'Barlow',system-ui,sans-serif;font-size:34px;font-weight:600;letter-spacing:-.01em;transition:transform .5s var(--e-out)}
+.nv-link:hover .nv-line,.nv-link:focus-visible .nv-line{transform:translateY(-100%)}
+.nv-link:focus-visible{outline:none}
+.nv-main:hover .nv-link{color:var(--dim)}
+.nv-main:hover .nv-link:hover{color:var(--cream)}
+.nv-sub{list-style:none;margin:30px 0 16px;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 24px}
+.nv-sub a,.nv-meta a{position:relative;display:inline-block;color:var(--dim);text-decoration:none;font-size:15px;line-height:1.35;opacity:0;transition:opacity var(--hide) var(--e-io),color .3s}
+.nv.is-open .nv-sub a,.nv.is-open .nv-meta a{opacity:1;transition:opacity var(--show) var(--e-io) calc(var(--grow) + 80ms),color .3s}
+.nv-sub a::after,.nv-meta a::after{content:"";position:absolute;left:0;bottom:-1px;width:100%;height:1px;background:currentColor;transform:scaleX(0);transform-origin:100% 50%;transition:transform .5s cubic-bezier(1,0,0,1)}
+.nv-sub a:hover,.nv-meta a:hover,.nv-sub a[aria-current="page"]{color:var(--cream)}
+.nv-sub a:hover::after,.nv-meta a:hover::after{transform:scaleX(1);transform-origin:0 50%}
+.nv-meta{margin:0 0 26px;display:flex;flex-direction:column;gap:4px;opacity:0;transform:translateY(8px);transition:opacity var(--hide) var(--e-io),transform var(--hide) var(--e-io)}
+.nv.is-open .nv-meta{opacity:1;transform:none;transition:opacity var(--show) var(--e-io) calc(var(--grow) + .1s),transform var(--show) var(--e-out) calc(var(--grow) + .1s)}
+.nv-meta span{font-family:'Barlow',system-ui,sans-serif;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.nv-meta a{opacity:1}
+.nv-cta.btn{width:100%;justify-content:center;border-radius:14px;opacity:0;transition:opacity var(--hide) var(--e-io),background .2s}
+.nv.is-open .nv-cta.btn{opacity:1;transition:opacity var(--show) var(--e-io) calc(var(--grow) + .12s),background .2s}
+
+/* Celular */
+@media (max-width:560px){
+  .nv{--h:50px;--rw:112px;bottom:12px}
+  .nv-act .ico{display:none}
+  .nv-act .btn{padding:0 16px;font-size:14px}
+  .nv-act .btn .ar,.nv-act .cta-lg{display:none}
+  .nv-act .cta-sh{display:inline}
+  .nv-panel{padding:44px 28px 26px;bottom:calc(100% + 10px)}
+  .nv-line{font-size:30px}
+  .nv-sym img{height:22px}
+}
+@media (max-width:400px){
+  .nv{--h:46px;--rw:46px}
+  .nv-roll{display:none}
+  .nv-act .btn{padding:0 14px;font-size:13.5px}
+}
+@media (max-height:640px){.nv-line{font-size:26px}.nv-mask,.nv-link,.nv-line{height:38px;line-height:38px}.nv-panel{padding-top:40px}.nv-sub{margin-top:18px}}
+
+@media (prefers-reduced-motion:reduce){
+  .nv-bar,.nv-sym,.nv-burger,.nv-col,.nv-act,.nv-panel__bg,.nv-link,.nv-line,.nv-title,.nv-sub a,.nv-meta,.nv-cta.btn,.nv-dim,.nv-roll{transition-duration:.01ms!important;transition-delay:0s!important;animation-duration:.01ms!important}
+}

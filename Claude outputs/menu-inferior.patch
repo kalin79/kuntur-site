@@ -1,0 +1,809 @@
+From 05253fa6803763f6194114ad19c38d9a9cd168d8 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Thu, 19 Nov 2026 19:30:08 -0500
+Subject: [PATCH] =?UTF-8?q?Men=C3=BA=20inferior=20nuevo:=20la=20barra=20se?=
+ =?UTF-8?q?=20cierra=20en=20un=20bot=C3=B3n=20y=20el=20panel=20crece=20des?=
+ =?UTF-8?q?de=20=C3=A9l?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- assets/kd-menu.css y assets/kd-menu.js: barra con símbolo, nombre de la sección visible y hamburguesa; panel con enlaces escalonados
+- 9 páginas: reemplazo del bloque .dock; el CTA y WhatsApp se mantienen con el mismo data-cta
+- Medición: data-track-location nav (barra) y nav_menu (panel)
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01QDccQMGDNxRqeJpW7cA429
+---
+ agencias.html            | 38 ++++++++++++----
+ assets/kd-menu.css       | 97 ++++++++++++++++++++++++++++++++++++++++
+ assets/kd-menu.js        | 58 ++++++++++++++++++++++++
+ diagnostico-inicial.html | 38 ++++++++++++----
+ index.html               | 49 +++++++++++---------
+ integraciones.html       | 38 ++++++++++++----
+ kuntur.html              | 38 ++++++++++++----
+ lupa-ux.html             | 38 ++++++++++++----
+ metodo.html              | 38 ++++++++++++----
+ privacidad.html          | 38 ++++++++++++----
+ terminos.html            | 38 ++++++++++++----
+ 11 files changed, 415 insertions(+), 93 deletions(-)
+ create mode 100644 assets/kd-menu.css
+ create mode 100644 assets/kd-menu.js
+
+diff --git a/agencias.html b/agencias.html
+index e93cee1..4f70e83 100644
+--- a/agencias.html
++++ b/agencias.html
+@@ -51,6 +51,7 @@ body{margin:0;background:#143E46}
+ a{color:#1C5A63}a:hover{color:#0F2F35}
+ </style>
+ <link rel="stylesheet" href="assets/kd-tech.css?v=20261107">
++<link rel="stylesheet" href="assets/kd-menu.css?v=20261119">
+ </head>
+ <body>
+ <!-- Google Tag Manager (noscript) -->
+@@ -191,18 +192,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ </div>
+ </footer>
+ 
+-<div class="dock">
+-<nav class="bar" aria-label="Principal">
+-<a href="index.html" aria-label="Kuntur Data, inicio" style="display: inline-flex; padding-right: 8px;"><img width="555" height="370" class="sym" src="assets/logo/kuntur-data-simbolo-crema.svg" alt=""></a>
+-<div class="bl">
+-<a href="kuntur.html">Kuntur</a>
+-<a href="lupa-ux.html">Lupa UX</a>
+-<a href="agencias.html" aria-current="page">Para agencias</a>
+-<a href="metodo.html">Método</a>
++<div class="nv" data-page="Para agencias">
++<div class="nv-dim" aria-hidden="true"></div>
++<div class="nv-panel" id="nvPanel" aria-hidden="true" data-track-location="nav_menu">
++<div class="nv-panel__bg" aria-hidden="true"></div>
++<nav class="nv-nav" aria-label="Menú">
++<p class="nv-title">Menú</p>
++<ul class="nv-main">
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="index.html" style="--i:0"><span class="nv-line">Inicio</span><span class="nv-line" aria-hidden="true">Inicio</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="kuntur.html" style="--i:1"><span class="nv-line">Kuntur</span><span class="nv-line" aria-hidden="true">Kuntur</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="lupa-ux.html" style="--i:2"><span class="nv-line">Lupa UX</span><span class="nv-line" aria-hidden="true">Lupa UX</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="agencias.html" style="--i:3" aria-current="page"><span class="nv-line">Para agencias</span><span class="nv-line" aria-hidden="true">Para agencias</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="metodo.html" style="--i:4"><span class="nv-line">Método</span><span class="nv-line" aria-hidden="true">Método</span></a></span></li>
++</ul>
++<ul class="nv-sub"><li><a href="diagnostico-inicial.html">Diagnóstico inicial</a></li><li><a href="integraciones.html">Integraciones</a></li><li><a href="privacidad.html">Privacidad</a></li><li><a href="terminos.html">Condiciones</a></li></ul>
++<p class="nv-meta"><span>Lima, Perú · Trabajo 100 % remoto</span><a href="https://wa.me/51906011090?text=Hola%2C%20vengo%20de%20kunturdata.com.">WhatsApp +51 906 011 090</a></p>
++<a class="btn btn-gold nv-cta" href="diagnostico-inicial.html" data-cta="pedir_muestra_gratis">Pedir diagnóstico inicial <span class="ar" aria-hidden="true">→</span></a>
++</nav>
+ </div>
++<div class="nv-row">
++<button class="nv-bar" type="button" aria-expanded="false" aria-controls="nvPanel" aria-label="Abrir menú">
++<span class="nv-bar__bg" aria-hidden="true"></span>
++<span class="nv-sym" aria-hidden="true"><img src="assets/logo/kuntur-data-simbolo-crema.svg" alt="" width="555" height="370"></span>
++<span class="nv-roller" aria-hidden="true"><span class="nv-col"><span class="nv-slot"><span class="nv-roll">Para agencias</span></span><span class="nv-slot"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M1 1l12 12M13 1L1 13"/></svg></span></span></span>
++<span class="nv-burger" aria-hidden="true"><svg viewBox="0 0 20 11" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M0 1h20M0 10h20"/></svg></span>
++</button>
++<div class="nv-act" data-track-location="nav">
+ <a class="btn btn-gold" href="diagnostico-inicial.html" data-cta="pedir_muestra_gratis"><span class="cta-lg">Pedir diagnóstico inicial</span><span class="cta-sh">Diagnóstico inicial</span> <span class="ar" aria-hidden="true">→</span></a>
+ <a class="ico" href="https://wa.me/51906011090?text=Hola%2C%20vengo%20de%20kunturdata.com." aria-label="Escribir por WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.4z"></path><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.3-2-1-1 .8a4 4 0 0 1-2.2-2.2l.8-1-1-2z"></path></svg></a>
+-</nav>
++</div>
++</div>
+ </div>
+ 
+ </div>
+@@ -211,6 +230,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ <script src="assets/vendor/SplitText.min.js" defer></script>
+ <script src="assets/vendor/ScrambleTextPlugin.min.js" defer></script>
+ <script src="assets/vendor/lenis.min.js" defer></script>
++<script src="assets/kd-menu.js?v=20261119" defer></script>
+ <script src="assets/kd.js?v=20261105c" defer></script>
+ </body>
+ </html>
+diff --git a/assets/kd-menu.css b/assets/kd-menu.css
+new file mode 100644
+index 0000000..f594976
+--- /dev/null
++++ b/assets/kd-menu.css
+@@ -0,0 +1,97 @@
++/* Menú inferior Kuntur Data (19 nov 2026)
++   La barra se cierra sobre sí misma hasta quedar en un botón de cierre, y el panel crece desde ese botón.
++   Los enlaces suben escalonados desde una máscara. Respeta prefers-reduced-motion. */
++.nv{--h:56px;--rw:190px;--teal:#143E46;--glass:rgba(15,47,53,.94);--line:rgba(144,202,231,.22);--cream:#F7F5EE;--dim:rgba(247,245,238,.6);--sky:#90CAE7;--e-io:cubic-bezier(.76,0,.24,1);--e-out:cubic-bezier(.165,.84,.44,1);--dur:.6s;--grow:.5s;--show:.5s;--hide:.3s;position:sticky;bottom:16px;z-index:60;display:flex;justify-content:center;padding:0 16px;pointer-events:none}
++.nv *,.nv *::before,.nv *::after{box-sizing:border-box}
++
++/* Fondo que oscurece la página con el menú abierto */
++.nv-dim{position:fixed;inset:0;background:rgba(9,28,32,.45);opacity:0;pointer-events:none;transition:opacity var(--dur) var(--e-io)}
++.nv.is-open .nv-dim{opacity:1;pointer-events:auto}
++
++/* Fila inferior: barra + acciones */
++.nv-row{position:relative;display:flex;align-items:center;pointer-events:auto}
++
++/* Barra: símbolo · título de la sección · hamburguesa */
++.nv-bar{position:relative;width:calc(var(--h) * 2 + var(--rw));height:var(--h);padding:0;margin:0;border:0;background:none;color:var(--cream);cursor:pointer;font:inherit;display:block;clip-path:inset(0 0 round 16px);transition:clip-path var(--dur) var(--e-io)}
++.nv-bar__bg{position:absolute;inset:0;border-radius:16px;background:rgba(20,62,70,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid var(--line);box-shadow:0 18px 40px -12px rgba(0,0,0,.45)}
++.nv.is-open .nv-bar{clip-path:inset(0 calc(50% - var(--h) / 2) round 14px)}
++.nv-bar:focus-visible{outline:none}
++.nv-bar:focus-visible .nv-bar__bg{outline:2px solid var(--sky);outline-offset:2px}
++.nv-sym,.nv-burger{position:absolute;top:0;width:var(--h);height:var(--h);display:grid;place-items:center;transition:opacity .3s var(--e-io),transform var(--dur) var(--e-io)}
++.nv-sym{left:0}
++.nv-sym img{height:26px;width:auto;display:block}
++.nv-burger{right:0}
++.nv-burger svg{width:20px;height:11px;display:block}
++.nv.is-open .nv-sym{opacity:0;transform:translateX(80px)}
++.nv.is-open .nv-burger{opacity:0;transform:translateX(-80px)}
++.nv-roller{position:absolute;top:0;left:50%;width:var(--rw);height:var(--h);overflow:hidden;transform:translateX(-50%)}
++.nv-col{display:flex;flex-direction:column;transition:transform var(--dur) var(--e-io)}
++.nv.is-open .nv-col{transform:translateY(calc(-1 * var(--h)))}
++.nv-slot{flex:0 0 var(--h);height:var(--h);display:flex;align-items:center;justify-content:center;overflow:hidden}
++.nv-slot svg{width:14px;height:14px}
++.nv-roll{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:'Barlow',system-ui,sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);padding:0 4px}
++.nv-roll.is-in{animation:nvRoll var(--dur) var(--e-out)}
++@keyframes nvRoll{from{transform:translateY(110%)}to{transform:translateY(0)}}
++.nv-bar:hover .nv-bar__bg{background:rgba(24,72,81,.94)}
++
++/* Acciones: CTA y WhatsApp. Se repliegan al abrir el menú */
++.nv-act{display:flex;align-items:center;gap:6px;margin-left:8px;max-width:420px;overflow:hidden;opacity:1;transition:max-width var(--dur) var(--e-io),margin var(--dur) var(--e-io),opacity .3s var(--e-io)}
++.nv.is-open .nv-act{max-width:0;margin-left:0;opacity:0;pointer-events:none}
++.nv-act .btn{min-height:var(--h);padding:0 22px;font-size:15px;white-space:nowrap;border-radius:16px}
++.nv-act .ico{width:var(--h);height:var(--h);border-radius:16px;background:rgba(20,62,70,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid var(--line);flex:none}
++.nv-act .cta-sh{display:none}
++.nv-act .btn-gold:hover{background:#F0C25E}
++
++/* Panel que crece desde la barra */
++.nv-panel{position:absolute;left:50%;bottom:calc(100% + 12px);width:440px;max-width:calc(100vw - 32px);transform:translateX(-50%);padding:56px 44px 36px;color:var(--cream);visibility:hidden;pointer-events:none;transition:visibility 0s linear calc(var(--hide) + var(--grow))}
++.nv.is-open .nv-panel{visibility:visible;pointer-events:auto;transition:visibility 0s linear}
++.nv-panel__bg{position:absolute;inset:0;z-index:-1;border-radius:20px;background:var(--glass);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line);box-shadow:0 30px 60px -20px rgba(0,0,0,.55);transform-origin:50% 100%;transform:scale(0);transition:transform var(--grow) var(--e-io) var(--hide)}
++.nv.is-open .nv-panel__bg{transform:scale(1);transition:transform var(--grow) var(--e-io) 0s}
++.nv-title{margin:0 0 18px;font-family:'Barlow',system-ui,sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sky);opacity:0;transition:opacity var(--hide) var(--e-io)}
++.nv.is-open .nv-title{opacity:1;transition:opacity var(--show) var(--e-io) var(--grow)}
++.nv-main{list-style:none;margin:0;padding:0}
++.nv-item{position:relative;display:flex;align-items:center}
++.nv-item::before{content:"";position:absolute;left:-20px;width:6px;height:6px;background:#E8B348;transform:rotate(45deg);opacity:0;transition:opacity .25s}
++.nv.is-open .nv-item:has([aria-current="page"])::before{opacity:1;transition:opacity var(--show) var(--e-io) calc(var(--grow) + .2s)}
++.nv-mask{display:flex;width:100%;height:46px;overflow:hidden}
++.nv-link{display:block;width:100%;height:46px;color:var(--cream);text-decoration:none;transform:translateY(150%);will-change:transform;transition:transform var(--hide) var(--e-io),color .4s}
++.nv.is-open .nv-link{transform:translateY(0);transition:transform var(--show) var(--e-out) calc(var(--grow) + var(--i) * 45ms),color .4s}
++.nv-line{display:block;height:46px;line-height:46px;font-family:'Barlow',system-ui,sans-serif;font-size:34px;font-weight:600;letter-spacing:-.01em;transition:transform .5s var(--e-out)}
++.nv-link:hover .nv-line,.nv-link:focus-visible .nv-line{transform:translateY(-100%)}
++.nv-link:focus-visible{outline:none}
++.nv-main:hover .nv-link{color:var(--dim)}
++.nv-main:hover .nv-link:hover{color:var(--cream)}
++.nv-sub{list-style:none;margin:30px 0 16px;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 24px}
++.nv-sub a,.nv-meta a{position:relative;display:inline-block;color:var(--dim);text-decoration:none;font-size:15px;line-height:1.35;opacity:0;transition:opacity var(--hide) var(--e-io),color .3s}
++.nv.is-open .nv-sub a,.nv.is-open .nv-meta a{opacity:1;transition:opacity var(--show) var(--e-io) calc(var(--grow) + 80ms),color .3s}
++.nv-sub a::after,.nv-meta a::after{content:"";position:absolute;left:0;bottom:-1px;width:100%;height:1px;background:currentColor;transform:scaleX(0);transform-origin:100% 50%;transition:transform .5s cubic-bezier(1,0,0,1)}
++.nv-sub a:hover,.nv-meta a:hover,.nv-sub a[aria-current="page"]{color:var(--cream)}
++.nv-sub a:hover::after,.nv-meta a:hover::after{transform:scaleX(1);transform-origin:0 50%}
++.nv-meta{margin:0 0 26px;display:flex;flex-direction:column;gap:4px;opacity:0;transform:translateY(8px);transition:opacity var(--hide) var(--e-io),transform var(--hide) var(--e-io)}
++.nv.is-open .nv-meta{opacity:1;transform:none;transition:opacity var(--show) var(--e-io) calc(var(--grow) + .1s),transform var(--show) var(--e-out) calc(var(--grow) + .1s)}
++.nv-meta span{font-family:'Barlow',system-ui,sans-serif;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
++.nv-meta a{opacity:1}
++.nv-cta.btn{width:100%;justify-content:center;border-radius:14px;opacity:0;transition:opacity var(--hide) var(--e-io),background .2s}
++.nv.is-open .nv-cta.btn{opacity:1;transition:opacity var(--show) var(--e-io) calc(var(--grow) + .12s),background .2s}
++
++/* Celular */
++@media (max-width:560px){
++  .nv{--h:50px;--rw:112px;bottom:12px}
++  .nv-act .ico{display:none}
++  .nv-act .btn{padding:0 16px;font-size:14px}
++  .nv-act .btn .ar,.nv-act .cta-lg{display:none}
++  .nv-act .cta-sh{display:inline}
++  .nv-panel{padding:44px 28px 26px;bottom:calc(100% + 10px)}
++  .nv-line{font-size:30px}
++  .nv-sym img{height:22px}
++}
++@media (max-width:400px){
++  .nv{--h:46px;--rw:46px}
++  .nv-roll{display:none}
++  .nv-act .btn{padding:0 14px;font-size:13.5px}
++}
++@media (max-height:640px){.nv-line{font-size:26px}.nv-mask,.nv-link,.nv-line{height:38px;line-height:38px}.nv-panel{padding-top:40px}.nv-sub{margin-top:18px}}
++
++@media (prefers-reduced-motion:reduce){
++  .nv-bar,.nv-sym,.nv-burger,.nv-col,.nv-act,.nv-panel__bg,.nv-link,.nv-line,.nv-title,.nv-sub a,.nv-meta,.nv-cta.btn,.nv-dim,.nv-roll{transition-duration:.01ms!important;transition-delay:0s!important;animation-duration:.01ms!important}
++}
+diff --git a/assets/kd-menu.js b/assets/kd-menu.js
+new file mode 100644
+index 0000000..15a097a
+--- /dev/null
++++ b/assets/kd-menu.js
+@@ -0,0 +1,58 @@
++/* Menú inferior Kuntur Data (19 nov 2026)
++   1) Abre y cierra el panel (botón de la barra, Esc, clic fuera, clic en un enlace).
++   2) Muestra en la barra el nombre de la sección visible, con un giro vertical al cambiar.
++   Se carga antes de kd.js para leer las etiquetas antes de su animación de texto. */
++(function () {
++  var d = document, nv = d.querySelector('.nv');
++  if (!nv) return;
++  var bar = nv.querySelector('.nv-bar'), panel = nv.querySelector('.nv-panel'),
++      dim = nv.querySelector('.nv-dim'), roll = nv.querySelector('.nv-roll');
++  var pageLabel = nv.getAttribute('data-page') || roll.textContent;
++  var last = null;
++
++  function setOpen(o, focusBack) {
++    nv.classList.toggle('is-open', o);
++    bar.setAttribute('aria-expanded', o ? 'true' : 'false');
++    bar.setAttribute('aria-label', o ? 'Cerrar menú' : 'Abrir menú');
++    if (o) { panel.removeAttribute('inert'); panel.removeAttribute('aria-hidden'); }
++    else { panel.setAttribute('inert', ''); panel.setAttribute('aria-hidden', 'true'); }
++    if (o) {
++      var first = panel.querySelector('.nv-link');
++      setTimeout(function () { if (nv.classList.contains('is-open') && first) first.focus({ preventScroll: true }); }, 450);
++    } else if (focusBack) { bar.focus({ preventScroll: true }); }
++  }
++  panel.setAttribute('inert', '');
++  bar.addEventListener('click', function () { setOpen(!nv.classList.contains('is-open'), true); });
++  dim.addEventListener('click', function () { setOpen(false, false); });
++  d.addEventListener('keydown', function (e) { if (e.key === 'Escape' && nv.classList.contains('is-open')) setOpen(false, true); });
++  panel.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false, false); }); });
++
++  // Título de la sección visible
++  function show(t) {
++    if (!t || t === last) return;
++    last = t;
++    roll.textContent = t;
++    roll.classList.remove('is-in'); void roll.offsetWidth; roll.classList.add('is-in');
++  }
++  var main = d.querySelector('main');
++  if (!main || !('IntersectionObserver' in window)) return;
++  var heads = main.querySelectorAll('h1, h2'), items = [];
++  heads.forEach(function (h, i) {
++    var sec = h.closest('section') || h.parentElement;
++    if (!sec || items.some(function (x) { return x.sec === sec; })) return;
++    var prev = h.previousElementSibling, t;
++    if (i === 0 || sec === main.querySelector('section')) t = pageLabel;
++    else if (prev && prev.classList.contains('eti') && !prev.children.length) t = prev.textContent.trim();
++    else t = h.textContent.trim();
++    items.push({ sec: sec, t: t.replace(/\s+/g, ' ') });
++  });
++  var io = new IntersectionObserver(function (es) {
++    es.forEach(function (e) {
++      if (!e.isIntersecting) return;
++      var it = items.find(function (x) { return x.sec === e.target; });
++      if (it) show(it.t);
++    });
++  }, { rootMargin: '-45% 0px -50% 0px' });
++  items.forEach(function (x) { io.observe(x.sec); });
++  show(pageLabel);
++})();
+diff --git a/diagnostico-inicial.html b/diagnostico-inicial.html
+index 91cb5d7..8da95cb 100644
+--- a/diagnostico-inicial.html
++++ b/diagnostico-inicial.html
+@@ -69,6 +69,7 @@ a{color:#1C5A63}a:hover{color:#0F2F35}
+ @media (max-width:700px){.qr{display:none}}
+ </style>
+ <link rel="stylesheet" href="assets/kd-tech.css?v=20261107">
++<link rel="stylesheet" href="assets/kd-menu.css?v=20261119">
+ </head>
+ <body>
+ <!-- Google Tag Manager (noscript) -->
+@@ -176,18 +177,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ </div>
+ </footer>
+ 
+-<div class="dock">
+-<nav class="bar" aria-label="Principal">
+-<a href="index.html" aria-label="Kuntur Data, inicio" style="display: inline-flex; padding-right: 8px;"><img width="555" height="370" class="sym" src="assets/logo/kuntur-data-simbolo-crema.svg" alt=""></a>
+-<div class="bl">
+-<a href="kuntur.html">Kuntur</a>
+-<a href="lupa-ux.html">Lupa UX</a>
+-<a href="agencias.html">Para agencias</a>
+-<a href="metodo.html">Método</a>
++<div class="nv" data-page="Diagnóstico inicial">
++<div class="nv-dim" aria-hidden="true"></div>
++<div class="nv-panel" id="nvPanel" aria-hidden="true" data-track-location="nav_menu">
++<div class="nv-panel__bg" aria-hidden="true"></div>
++<nav class="nv-nav" aria-label="Menú">
++<p class="nv-title">Menú</p>
++<ul class="nv-main">
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="index.html" style="--i:0"><span class="nv-line">Inicio</span><span class="nv-line" aria-hidden="true">Inicio</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="kuntur.html" style="--i:1"><span class="nv-line">Kuntur</span><span class="nv-line" aria-hidden="true">Kuntur</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="lupa-ux.html" style="--i:2"><span class="nv-line">Lupa UX</span><span class="nv-line" aria-hidden="true">Lupa UX</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="agencias.html" style="--i:3"><span class="nv-line">Para agencias</span><span class="nv-line" aria-hidden="true">Para agencias</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="metodo.html" style="--i:4"><span class="nv-line">Método</span><span class="nv-line" aria-hidden="true">Método</span></a></span></li>
++</ul>
++<ul class="nv-sub"><li><a href="diagnostico-inicial.html" aria-current="page">Diagnóstico inicial</a></li><li><a href="integraciones.html">Integraciones</a></li><li><a href="privacidad.html">Privacidad</a></li><li><a href="terminos.html">Condiciones</a></li></ul>
++<p class="nv-meta"><span>Lima, Perú · Trabajo 100 % remoto</span><a href="https://wa.me/51906011090?text=Hola%2C%20vengo%20de%20kunturdata.com.">WhatsApp +51 906 011 090</a></p>
++<a class="btn btn-gold nv-cta" href="#contenido" data-cta="pedir_muestra_gratis">Pedir diagnóstico inicial</a>
++</nav>
+ </div>
++<div class="nv-row">
++<button class="nv-bar" type="button" aria-expanded="false" aria-controls="nvPanel" aria-label="Abrir menú">
++<span class="nv-bar__bg" aria-hidden="true"></span>
++<span class="nv-sym" aria-hidden="true"><img src="assets/logo/kuntur-data-simbolo-crema.svg" alt="" width="555" height="370"></span>
++<span class="nv-roller" aria-hidden="true"><span class="nv-col"><span class="nv-slot"><span class="nv-roll">Diagnóstico inicial</span></span><span class="nv-slot"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M1 1l12 12M13 1L1 13"/></svg></span></span></span>
++<span class="nv-burger" aria-hidden="true"><svg viewBox="0 0 20 11" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M0 1h20M0 10h20"/></svg></span>
++</button>
++<div class="nv-act" data-track-location="nav">
+ <a class="btn btn-gold" href="#contenido" aria-current="page" data-cta="pedir_muestra_gratis">Pedir diagnóstico inicial</a>
+ <a class="ico" href="https://wa.me/51906011090?text=Hola%2C%20vengo%20de%20kunturdata.com." aria-label="Escribir por WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.4z"></path><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.3-2-1-1 .8a4 4 0 0 1-2.2-2.2l.8-1-1-2z"></path></svg></a>
+-</nav>
++</div>
++</div>
+ </div>
+ 
+ </div>
+@@ -210,6 +229,7 @@ var cb=document.getElementById('copyBtn');cb.addEventListener('click',function()
+ <script src="assets/vendor/SplitText.min.js" defer></script>
+ <script src="assets/vendor/ScrambleTextPlugin.min.js" defer></script>
+ <script src="assets/vendor/lenis.min.js" defer></script>
++<script src="assets/kd-menu.js?v=20261119" defer></script>
+ <script src="assets/kd.js?v=20261105c" defer></script>
+ </body>
+ </html>
+diff --git a/index.html b/index.html
+index de61c8c..55e770b 100644
+--- a/index.html
++++ b/index.html
+@@ -158,6 +158,7 @@ a{color:#1C5A63}a:hover{color:#0F2F35}
+ 
+ </style>
+ <link rel="stylesheet" href="assets/kd-tech.css?v=20261107">
++<link rel="stylesheet" href="assets/kd-menu.css?v=20261119">
+ </head>
+ <body>
+ <!-- Google Tag Manager (noscript) -->
+@@ -318,39 +319,45 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ </div>
+ </footer>
+ 
+-<div class="dock">
+-<nav class="sheet" id="sheet" hidden aria-label="Menú">
+-<a href="kuntur.html">Kuntur</a>
+-<a href="lupa-ux.html">Lupa UX</a>
+-<a href="agencias.html">Para agencias</a>
+-<a href="metodo.html">Método</a>
+-<a href="diagnostico-inicial.html">Diagnóstico inicial</a>
++<div class="nv" data-page="Inicio">
++<div class="nv-dim" aria-hidden="true"></div>
++<div class="nv-panel" id="nvPanel" aria-hidden="true" data-track-location="nav_menu">
++<div class="nv-panel__bg" aria-hidden="true"></div>
++<nav class="nv-nav" aria-label="Menú">
++<p class="nv-title">Menú</p>
++<ul class="nv-main">
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="#inicio" style="--i:0" aria-current="page"><span class="nv-line">Inicio</span><span class="nv-line" aria-hidden="true">Inicio</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="kuntur.html" style="--i:1"><span class="nv-line">Kuntur</span><span class="nv-line" aria-hidden="true">Kuntur</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="lupa-ux.html" style="--i:2"><span class="nv-line">Lupa UX</span><span class="nv-line" aria-hidden="true">Lupa UX</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="agencias.html" style="--i:3"><span class="nv-line">Para agencias</span><span class="nv-line" aria-hidden="true">Para agencias</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="metodo.html" style="--i:4"><span class="nv-line">Método</span><span class="nv-line" aria-hidden="true">Método</span></a></span></li>
++</ul>
++<ul class="nv-sub"><li><a href="diagnostico-inicial.html">Diagnóstico inicial</a></li><li><a href="integraciones.html">Integraciones</a></li><li><a href="privacidad.html">Privacidad</a></li><li><a href="terminos.html">Condiciones</a></li></ul>
++<p class="nv-meta"><span>Lima, Perú · Trabajo 100 % remoto</span><a href="https://wa.me/51906011090?text=Hola%2C%20vengo%20de%20kunturdata.com.">WhatsApp +51 906 011 090</a></p>
++<a class="btn btn-gold nv-cta" href="diagnostico-inicial.html" data-cta="pedir_muestra_gratis">Pedir diagnóstico inicial <span class="ar" aria-hidden="true">→</span></a>
+ </nav>
+-<nav class="bar" aria-label="Principal">
+-<a href="#inicio" aria-label="Kuntur Data, inicio" style="display: inline-flex; padding-right: 8px;"><img width="555" height="370" class="sym" src="assets/logo/kuntur-data-simbolo-crema.svg" alt="" style="height: 30px; width: auto;"></a>
+-<div class="bl">
+-<a href="kuntur.html">Kuntur</a>
+-<a href="lupa-ux.html">Lupa UX</a>
+-<a href="agencias.html">Para agencias</a>
+-<a href="metodo.html">Método</a>
+ </div>
+-<button class="menu-btn" type="button" aria-expanded="false" aria-controls="sheet" id="menuBtn">Menú</button>
++<div class="nv-row">
++<button class="nv-bar" type="button" aria-expanded="false" aria-controls="nvPanel" aria-label="Abrir menú">
++<span class="nv-bar__bg" aria-hidden="true"></span>
++<span class="nv-sym" aria-hidden="true"><img src="assets/logo/kuntur-data-simbolo-crema.svg" alt="" width="555" height="370"></span>
++<span class="nv-roller" aria-hidden="true"><span class="nv-col"><span class="nv-slot"><span class="nv-roll">Inicio</span></span><span class="nv-slot"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M1 1l12 12M13 1L1 13"/></svg></span></span></span>
++<span class="nv-burger" aria-hidden="true"><svg viewBox="0 0 20 11" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M0 1h20M0 10h20"/></svg></span>
++</button>
++<div class="nv-act" data-track-location="nav">
+ <a class="btn btn-gold" href="diagnostico-inicial.html" data-cta="pedir_muestra_gratis"><span class="cta-lg">Pedir diagnóstico inicial</span><span class="cta-sh">Diagnóstico inicial</span> <span class="ar" aria-hidden="true">→</span></a>
+ <a class="ico" href="https://wa.me/51906011090?text=Hola%2C%20vengo%20de%20kunturdata.com." aria-label="Escribir por WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.4z"></path><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.3-2-1-1 .8a4 4 0 0 1-2.2-2.2l.8-1-1-2z"></path></svg></a>
+-</nav>
++</div>
++</div>
+ </div>
+ 
+ </div>
+-<script>
+-(function(){var b=document.getElementById('menuBtn'),s=document.getElementById('sheet');if(!b||!s)return;
+-b.addEventListener('click',function(){var o=s.hasAttribute('hidden');if(o){s.removeAttribute('hidden')}else{s.setAttribute('hidden','')}b.setAttribute('aria-expanded',o?'true':'false');b.textContent=o?'Cerrar':'Menú';});
+-s.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){s.setAttribute('hidden','');b.setAttribute('aria-expanded','false');b.textContent='Menú';});});})();
+-</script>
+ <script src="assets/vendor/gsap.min.js" defer></script>
+ <script src="assets/vendor/ScrollTrigger.min.js" defer></script>
+ <script src="assets/vendor/SplitText.min.js" defer></script>
+ <script src="assets/vendor/ScrambleTextPlugin.min.js" defer></script>
+ <script src="assets/vendor/lenis.min.js" defer></script>
++<script src="assets/kd-menu.js?v=20261119" defer></script>
+ <script src="assets/kd.js?v=20261105c" defer></script>
+ </body>
+ </html>
+diff --git a/integraciones.html b/integraciones.html
+index d3872bd..c2dc5e5 100644
+--- a/integraciones.html
++++ b/integraciones.html
+@@ -54,6 +54,7 @@ a{color:#1C5A63}a:hover{color:#0F2F35}
+ .rev li::before{content:counter(paso);flex:none;width:26px;height:26px;border-radius:50%;background:#1C5A63;color:#F7F5EE;font-family:'Barlow',sans-serif;font-weight:700;font-size:13px;display:grid;place-items:center;margin-top:1px}
+ </style>
+ <link rel="stylesheet" href="assets/kd-tech.css?v=20261107">
++<link rel="stylesheet" href="assets/kd-menu.css?v=20261119">
+ </head>
+ <body>
+ <!-- Google Tag Manager (noscript) -->
+@@ -144,18 +145,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ </div>
+ </footer>
+ 
+-<div class="dock">
+-<nav class="bar" aria-label="Principal">
+-<a href="index.html" aria-label="Kuntur Data, inicio" style="display: inline-flex; padding-right: 8px;"><img width="555" height="370" class="sym" src="assets/logo/kuntur-data-simbolo-crema.svg" alt=""></a>
+-<div class="bl">
+-<a href="kuntur.html">Kuntur</a>
+-<a href="lupa-ux.html">Lupa UX</a>
+-<a href="agencias.html">Para agencias</a>
+-<a href="metodo.html">Método</a>
++<div class="nv" data-page="Integraciones">
++<div class="nv-dim" aria-hidden="true"></div>
++<div class="nv-panel" id="nvPanel" aria-hidden="true" data-track-location="nav_menu">
++<div class="nv-panel__bg" aria-hidden="true"></div>
++<nav class="nv-nav" aria-label="Menú">
++<p class="nv-title">Menú</p>
++<ul class="nv-main">
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="index.html" style="--i:0"><span class="nv-line">Inicio</span><span class="nv-line" aria-hidden="true">Inicio</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="kuntur.html" style="--i:1"><span class="nv-line">Kuntur</span><span class="nv-line" aria-hidden="true">Kuntur</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="lupa-ux.html" style="--i:2"><span class="nv-line">Lupa UX</span><span class="nv-line" aria-hidden="true">Lupa UX</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="agencias.html" style="--i:3"><span class="nv-line">Para agencias</span><span class="nv-line" aria-hidden="true">Para agencias</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="metodo.html" style="--i:4"><span class="nv-line">Método</span><span class="nv-line" aria-hidden="true">Método</span></a></span></li>
++</ul>
++<ul class="nv-sub"><li><a href="diagnostico-inicial.html">Diagnóstico inicial</a></li><li><a href="integraciones.html" aria-current="page">Integraciones</a></li><li><a href="privacidad.html">Privacidad</a></li><li><a href="terminos.html">Condiciones</a></li></ul>
++<p class="nv-meta"><span>Lima, Perú · Trabajo 100 % remoto</span><a href="https://wa.me/51906011090?text=Hola%2C%20vengo%20de%20kunturdata.com.">WhatsApp +51 906 011 090</a></p>
++<a class="btn btn-gold nv-cta" href="diagnostico-inicial.html" data-cta="pedir_muestra_gratis">Pedir diagnóstico inicial <span class="ar" aria-hidden="true">→</span></a>
++</nav>
+ </div>
++<div class="nv-row">
++<button class="nv-bar" type="button" aria-expanded="false" aria-controls="nvPanel" aria-label="Abrir menú">
++<span class="nv-bar__bg" aria-hidden="true"></span>
++<span class="nv-sym" aria-hidden="true"><img src="assets/logo/kuntur-data-simbolo-crema.svg" alt="" width="555" height="370"></span>
++<span class="nv-roller" aria-hidden="true"><span class="nv-col"><span class="nv-slot"><span class="nv-roll">Integraciones</span></span><span class="nv-slot"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M1 1l12 12M13 1L1 13"/></svg></span></span></span>
++<span class="nv-burger" aria-hidden="true"><svg viewBox="0 0 20 11" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M0 1h20M0 10h20"/></svg></span>
++</button>
++<div class="nv-act" data-track-location="nav">
+ <a class="btn btn-gold" href="diagnostico-inicial.html" data-cta="pedir_muestra_gratis"><span class="cta-lg">Pedir diagnóstico inicial</span><span class="cta-sh">Diagnóstico inicial</span> <span class="ar" aria-hidden="true">→</span></a>
+ <a class="ico" href="https://wa.me/51906011090?text=Hola%2C%20vengo%20de%20kunturdata.com." aria-label="Escribir por WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.4z"></path><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.3-2-1-1 .8a4 4 0 0 1-2.2-2.2l.8-1-1-2z"></path></svg></a>
+-</nav>
++</div>
++</div>
+ </div>
+ 
+ </div>
+@@ -164,6 +183,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ <script src="assets/vendor/SplitText.min.js" defer></script>
+ <script src="assets/vendor/ScrambleTextPlugin.min.js" defer></script>
+ <script src="assets/vendor/lenis.min.js" defer></script>
++<script src="assets/kd-menu.js?v=20261119" defer></script>
+ <script src="assets/kd.js?v=20261105c" defer></script>
+ </body>
+ </html>
+diff --git a/kuntur.html b/kuntur.html
+index b21e2fe..8136df8 100644
+--- a/kuntur.html
++++ b/kuntur.html
+@@ -51,6 +51,7 @@ body{margin:0;background:#143E46}
+ a{color:#1C5A63}a:hover{color:#0F2F35}
+ </style>
+ <link rel="stylesheet" href="assets/kd-tech.css?v=20261107">
++<link rel="stylesheet" href="assets/kd-menu.css?v=20261119">
+ </head>
+ <body>
+ <!-- Google Tag Manager (noscript) -->
+@@ -299,18 +300,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ </div>
+ </footer>
+ 
+-<div class="dock">
+-<nav class="bar" aria-label="Principal">
+-<a href="index.html" aria-label="Kuntur Data, inicio" style="display: inline-flex; padding-right: 8px;"><img width="555" height="370" class="sym" src="assets/logo/kuntur-data-simbolo-crema.svg" alt=""></a>
+-<div class="bl">
+-<a href="kuntur.html" aria-current="page">Kuntur</a>
+-<a href="lupa-ux.html">Lupa UX</a>
+-<a href="agencias.html">Para agencias</a>
+-<a href="metodo.html">Método</a>
++<div class="nv" data-page="Kuntur">
++<div class="nv-dim" aria-hidden="true"></div>
++<div class="nv-panel" id="nvPanel" aria-hidden="true" data-track-location="nav_menu">
++<div class="nv-panel__bg" aria-hidden="true"></div>
++<nav class="nv-nav" aria-label="Menú">
++<p class="nv-title">Menú</p>
++<ul class="nv-main">
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="index.html" style="--i:0"><span class="nv-line">Inicio</span><span class="nv-line" aria-hidden="true">Inicio</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="kuntur.html" style="--i:1" aria-current="page"><span class="nv-line">Kuntur</span><span class="nv-line" aria-hidden="true">Kuntur</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="lupa-ux.html" style="--i:2"><span class="nv-line">Lupa UX</span><span class="nv-line" aria-hidden="true">Lupa UX</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="agencias.html" style="--i:3"><span class="nv-line">Para agencias</span><span class="nv-line" aria-hidden="true">Para agencias</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="metodo.html" style="--i:4"><span class="nv-line">Método</span><span class="nv-line" aria-hidden="true">Método</span></a></span></li>
++</ul>
++<ul class="nv-sub"><li><a href="diagnostico-inicial.html">Diagnóstico inicial</a></li><li><a href="integraciones.html">Integraciones</a></li><li><a href="privacidad.html">Privacidad</a></li><li><a href="terminos.html">Condiciones</a></li></ul>
++<p class="nv-meta"><span>Lima, Perú · Trabajo 100 % remoto</span><a href="https://wa.me/51906011090?text=Hola%2C%20vengo%20de%20kunturdata.com.">WhatsApp +51 906 011 090</a></p>
++<a class="btn btn-gold nv-cta" href="https://wa.me/51906011090?text=Hola%2C%20quiero%20el%20diagn%C3%B3stico%20inicial%20de%20Kuntur.">Pedir diagnóstico de Kuntur <span class="ar" aria-hidden="true">→</span></a>
++</nav>
+ </div>
++<div class="nv-row">
++<button class="nv-bar" type="button" aria-expanded="false" aria-controls="nvPanel" aria-label="Abrir menú">
++<span class="nv-bar__bg" aria-hidden="true"></span>
++<span class="nv-sym" aria-hidden="true"><img src="assets/logo/kuntur-data-simbolo-crema.svg" alt="" width="555" height="370"></span>
++<span class="nv-roller" aria-hidden="true"><span class="nv-col"><span class="nv-slot"><span class="nv-roll">Kuntur</span></span><span class="nv-slot"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M1 1l12 12M13 1L1 13"/></svg></span></span></span>
++<span class="nv-burger" aria-hidden="true"><svg viewBox="0 0 20 11" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M0 1h20M0 10h20"/></svg></span>
++</button>
++<div class="nv-act" data-track-location="nav">
+ <a class="btn btn-gold" href="https://wa.me/51906011090?text=Hola%2C%20quiero%20el%20diagn%C3%B3stico%20inicial%20de%20Kuntur.">Pedir diagnóstico de Kuntur <span class="ar" aria-hidden="true">→</span></a>
+ <a class="ico" href="https://wa.me/51906011090?text=Hola%2C%20quiero%20el%20diagn%C3%B3stico%20inicial%20de%20Kuntur." aria-label="Escribir por WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.4z"></path><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.3-2-1-1 .8a4 4 0 0 1-2.2-2.2l.8-1-1-2z"></path></svg></a>
+-</nav>
++</div>
++</div>
+ </div>
+ 
+ </div>
+@@ -319,6 +338,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ <script src="assets/vendor/SplitText.min.js" defer></script>
+ <script src="assets/vendor/ScrambleTextPlugin.min.js" defer></script>
+ <script src="assets/vendor/lenis.min.js" defer></script>
++<script src="assets/kd-menu.js?v=20261119" defer></script>
+ <script src="assets/kd.js?v=20261105c" defer></script>
+ </body>
+ </html>
+diff --git a/lupa-ux.html b/lupa-ux.html
+index 388a2aa..40848e3 100644
+--- a/lupa-ux.html
++++ b/lupa-ux.html
+@@ -51,6 +51,7 @@ body{margin:0;background:#143E46}
+ a{color:#1C5A63}a:hover{color:#0F2F35}
+ </style>
+ <link rel="stylesheet" href="assets/kd-tech.css?v=20261107">
++<link rel="stylesheet" href="assets/kd-menu.css?v=20261119">
+ </head>
+ <body>
+ <!-- Google Tag Manager (noscript) -->
+@@ -266,18 +267,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ </div>
+ </footer>
+ 
+-<div class="dock">
+-<nav class="bar" aria-label="Principal">
+-<a href="index.html" aria-label="Kuntur Data, inicio" style="display: inline-flex; padding-right: 8px;"><img width="555" height="370" class="sym" src="assets/logo/kuntur-data-simbolo-crema.svg" alt=""></a>
+-<div class="bl">
+-<a href="kuntur.html">Kuntur</a>
+-<a href="lupa-ux.html" aria-current="page">Lupa UX</a>
+-<a href="agencias.html">Para agencias</a>
+-<a href="metodo.html">Método</a>
++<div class="nv" data-page="Lupa UX">
++<div class="nv-dim" aria-hidden="true"></div>
++<div class="nv-panel" id="nvPanel" aria-hidden="true" data-track-location="nav_menu">
++<div class="nv-panel__bg" aria-hidden="true"></div>
++<nav class="nv-nav" aria-label="Menú">
++<p class="nv-title">Menú</p>
++<ul class="nv-main">
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="index.html" style="--i:0"><span class="nv-line">Inicio</span><span class="nv-line" aria-hidden="true">Inicio</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="kuntur.html" style="--i:1"><span class="nv-line">Kuntur</span><span class="nv-line" aria-hidden="true">Kuntur</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="lupa-ux.html" style="--i:2" aria-current="page"><span class="nv-line">Lupa UX</span><span class="nv-line" aria-hidden="true">Lupa UX</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="agencias.html" style="--i:3"><span class="nv-line">Para agencias</span><span class="nv-line" aria-hidden="true">Para agencias</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="metodo.html" style="--i:4"><span class="nv-line">Método</span><span class="nv-line" aria-hidden="true">Método</span></a></span></li>
++</ul>
++<ul class="nv-sub"><li><a href="diagnostico-inicial.html">Diagnóstico inicial</a></li><li><a href="integraciones.html">Integraciones</a></li><li><a href="privacidad.html">Privacidad</a></li><li><a href="terminos.html">Condiciones</a></li></ul>
++<p class="nv-meta"><span>Lima, Perú · Trabajo 100 % remoto</span><a href="https://wa.me/51906011090?text=Hola%2C%20vengo%20de%20kunturdata.com.">WhatsApp +51 906 011 090</a></p>
++<a class="btn btn-gold nv-cta" href="https://wa.me/51906011090?text=Hola%2C%20quiero%20el%20diagn%C3%B3stico%20inicial%20de%20Lupa%20UX.%20Mi%20sitio%20es%3A%20">Pedir diagnóstico de Lupa UX <span class="ar" aria-hidden="true">→</span></a>
++</nav>
+ </div>
++<div class="nv-row">
++<button class="nv-bar" type="button" aria-expanded="false" aria-controls="nvPanel" aria-label="Abrir menú">
++<span class="nv-bar__bg" aria-hidden="true"></span>
++<span class="nv-sym" aria-hidden="true"><img src="assets/logo/kuntur-data-simbolo-crema.svg" alt="" width="555" height="370"></span>
++<span class="nv-roller" aria-hidden="true"><span class="nv-col"><span class="nv-slot"><span class="nv-roll">Lupa UX</span></span><span class="nv-slot"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M1 1l12 12M13 1L1 13"/></svg></span></span></span>
++<span class="nv-burger" aria-hidden="true"><svg viewBox="0 0 20 11" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M0 1h20M0 10h20"/></svg></span>
++</button>
++<div class="nv-act" data-track-location="nav">
+ <a class="btn btn-gold" href="https://wa.me/51906011090?text=Hola%2C%20quiero%20el%20diagn%C3%B3stico%20inicial%20de%20Lupa%20UX.%20Mi%20sitio%20es%3A%20">Pedir diagnóstico de Lupa UX <span class="ar" aria-hidden="true">→</span></a>
+ <a class="ico" href="https://wa.me/51906011090?text=Hola%2C%20quiero%20el%20diagn%C3%B3stico%20inicial%20de%20Lupa%20UX.%20Mi%20sitio%20es%3A%20" aria-label="Escribir por WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.4z"></path><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.3-2-1-1 .8a4 4 0 0 1-2.2-2.2l.8-1-1-2z"></path></svg></a>
+-</nav>
++</div>
++</div>
+ </div>
+ 
+ </div>
+@@ -286,6 +305,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ <script src="assets/vendor/SplitText.min.js" defer></script>
+ <script src="assets/vendor/ScrambleTextPlugin.min.js" defer></script>
+ <script src="assets/vendor/lenis.min.js" defer></script>
++<script src="assets/kd-menu.js?v=20261119" defer></script>
+ <script src="assets/kd.js?v=20261105c" defer></script>
+ </body>
+ </html>
+diff --git a/metodo.html b/metodo.html
+index 3bb9eb3..95c0b60 100644
+--- a/metodo.html
++++ b/metodo.html
+@@ -51,6 +51,7 @@ body{margin:0;background:#143E46}
+ a{color:#1C5A63}a:hover{color:#0F2F35}
+ </style>
+ <link rel="stylesheet" href="assets/kd-tech.css?v=20261107">
++<link rel="stylesheet" href="assets/kd-menu.css?v=20261119">
+ </head>
+ <body>
+ <!-- Google Tag Manager (noscript) -->
+@@ -190,18 +191,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ </div>
+ </footer>
+ 
+-<div class="dock">
+-<nav class="bar" aria-label="Principal">
+-<a href="index.html" aria-label="Kuntur Data, inicio" style="display: inline-flex; padding-right: 8px;"><img width="555" height="370" class="sym" src="assets/logo/kuntur-data-simbolo-crema.svg" alt=""></a>
+-<div class="bl">
+-<a href="kuntur.html">Kuntur</a>
+-<a href="lupa-ux.html">Lupa UX</a>
+-<a href="agencias.html">Para agencias</a>
+-<a href="metodo.html" aria-current="page">Método</a>
++<div class="nv" data-page="Método">
++<div class="nv-dim" aria-hidden="true"></div>
++<div class="nv-panel" id="nvPanel" aria-hidden="true" data-track-location="nav_menu">
++<div class="nv-panel__bg" aria-hidden="true"></div>
++<nav class="nv-nav" aria-label="Menú">
++<p class="nv-title">Menú</p>
++<ul class="nv-main">
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="index.html" style="--i:0"><span class="nv-line">Inicio</span><span class="nv-line" aria-hidden="true">Inicio</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="kuntur.html" style="--i:1"><span class="nv-line">Kuntur</span><span class="nv-line" aria-hidden="true">Kuntur</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="lupa-ux.html" style="--i:2"><span class="nv-line">Lupa UX</span><span class="nv-line" aria-hidden="true">Lupa UX</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="agencias.html" style="--i:3"><span class="nv-line">Para agencias</span><span class="nv-line" aria-hidden="true">Para agencias</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="metodo.html" style="--i:4" aria-current="page"><span class="nv-line">Método</span><span class="nv-line" aria-hidden="true">Método</span></a></span></li>
++</ul>
++<ul class="nv-sub"><li><a href="diagnostico-inicial.html">Diagnóstico inicial</a></li><li><a href="integraciones.html">Integraciones</a></li><li><a href="privacidad.html">Privacidad</a></li><li><a href="terminos.html">Condiciones</a></li></ul>
++<p class="nv-meta"><span>Lima, Perú · Trabajo 100 % remoto</span><a href="https://wa.me/51906011090?text=Hola%2C%20vengo%20de%20kunturdata.com.">WhatsApp +51 906 011 090</a></p>
++<a class="btn btn-gold nv-cta" href="diagnostico-inicial.html" data-cta="pedir_muestra_gratis">Pedir diagnóstico inicial <span class="ar" aria-hidden="true">→</span></a>
++</nav>
+ </div>
++<div class="nv-row">
++<button class="nv-bar" type="button" aria-expanded="false" aria-controls="nvPanel" aria-label="Abrir menú">
++<span class="nv-bar__bg" aria-hidden="true"></span>
++<span class="nv-sym" aria-hidden="true"><img src="assets/logo/kuntur-data-simbolo-crema.svg" alt="" width="555" height="370"></span>
++<span class="nv-roller" aria-hidden="true"><span class="nv-col"><span class="nv-slot"><span class="nv-roll">Método</span></span><span class="nv-slot"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M1 1l12 12M13 1L1 13"/></svg></span></span></span>
++<span class="nv-burger" aria-hidden="true"><svg viewBox="0 0 20 11" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M0 1h20M0 10h20"/></svg></span>
++</button>
++<div class="nv-act" data-track-location="nav">
+ <a class="btn btn-gold" href="diagnostico-inicial.html" data-cta="pedir_muestra_gratis"><span class="cta-lg">Pedir diagnóstico inicial</span><span class="cta-sh">Diagnóstico inicial</span> <span class="ar" aria-hidden="true">→</span></a>
+ <a class="ico" href="https://wa.me/51906011090?text=Hola%2C%20vengo%20de%20kunturdata.com." aria-label="Escribir por WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.4z"></path><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.3-2-1-1 .8a4 4 0 0 1-2.2-2.2l.8-1-1-2z"></path></svg></a>
+-</nav>
++</div>
++</div>
+ </div>
+ 
+ </div>
+@@ -210,6 +229,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ <script src="assets/vendor/SplitText.min.js" defer></script>
+ <script src="assets/vendor/ScrambleTextPlugin.min.js" defer></script>
+ <script src="assets/vendor/lenis.min.js" defer></script>
++<script src="assets/kd-menu.js?v=20261119" defer></script>
+ <script src="assets/kd.js?v=20261105c" defer></script>
+ </body>
+ </html>
+diff --git a/privacidad.html b/privacidad.html
+index 7dace61..6b8829b 100644
+--- a/privacidad.html
++++ b/privacidad.html
+@@ -51,6 +51,7 @@ body{margin:0;background:#143E46}
+ a{color:#1C5A63}a:hover{color:#0F2F35}
+ </style>
+ <link rel="stylesheet" href="assets/kd-tech.css?v=20261107">
++<link rel="stylesheet" href="assets/kd-menu.css?v=20261119">
+ </head>
+ <body>
+ <!-- Google Tag Manager (noscript) -->
+@@ -260,18 +261,36 @@ que publica el propio Google. También puede escribir a
+ </div>
+ </footer>
+ 
+-<div class="dock">
+-<nav class="bar" aria-label="Principal">
+-<a href="index.html" aria-label="Kuntur Data, inicio" style="display: inline-flex; padding-right: 8px;"><img width="555" height="370" class="sym" src="assets/logo/kuntur-data-simbolo-crema.svg" alt=""></a>
+-<div class="bl">
+-<a href="kuntur.html">Kuntur</a>
+-<a href="lupa-ux.html">Lupa UX</a>
+-<a href="agencias.html">Para agencias</a>
+-<a href="metodo.html">Método</a>
++<div class="nv" data-page="Privacidad">
++<div class="nv-dim" aria-hidden="true"></div>
++<div class="nv-panel" id="nvPanel" aria-hidden="true" data-track-location="nav_menu">
++<div class="nv-panel__bg" aria-hidden="true"></div>
++<nav class="nv-nav" aria-label="Menú">
++<p class="nv-title">Menú</p>
++<ul class="nv-main">
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="index.html" style="--i:0"><span class="nv-line">Inicio</span><span class="nv-line" aria-hidden="true">Inicio</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="kuntur.html" style="--i:1"><span class="nv-line">Kuntur</span><span class="nv-line" aria-hidden="true">Kuntur</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="lupa-ux.html" style="--i:2"><span class="nv-line">Lupa UX</span><span class="nv-line" aria-hidden="true">Lupa UX</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="agencias.html" style="--i:3"><span class="nv-line">Para agencias</span><span class="nv-line" aria-hidden="true">Para agencias</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="metodo.html" style="--i:4"><span class="nv-line">Método</span><span class="nv-line" aria-hidden="true">Método</span></a></span></li>
++</ul>
++<ul class="nv-sub"><li><a href="diagnostico-inicial.html">Diagnóstico inicial</a></li><li><a href="integraciones.html">Integraciones</a></li><li><a href="privacidad.html" aria-current="page">Privacidad</a></li><li><a href="terminos.html">Condiciones</a></li></ul>
++<p class="nv-meta"><span>Lima, Perú · Trabajo 100 % remoto</span><a href="https://wa.me/51906011090?text=Hola%2C%20vengo%20de%20kunturdata.com.">WhatsApp +51 906 011 090</a></p>
++<a class="btn btn-gold nv-cta" href="diagnostico-inicial.html" data-cta="pedir_muestra_gratis">Pedir diagnóstico inicial <span class="ar" aria-hidden="true">→</span></a>
++</nav>
+ </div>
++<div class="nv-row">
++<button class="nv-bar" type="button" aria-expanded="false" aria-controls="nvPanel" aria-label="Abrir menú">
++<span class="nv-bar__bg" aria-hidden="true"></span>
++<span class="nv-sym" aria-hidden="true"><img src="assets/logo/kuntur-data-simbolo-crema.svg" alt="" width="555" height="370"></span>
++<span class="nv-roller" aria-hidden="true"><span class="nv-col"><span class="nv-slot"><span class="nv-roll">Privacidad</span></span><span class="nv-slot"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M1 1l12 12M13 1L1 13"/></svg></span></span></span>
++<span class="nv-burger" aria-hidden="true"><svg viewBox="0 0 20 11" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M0 1h20M0 10h20"/></svg></span>
++</button>
++<div class="nv-act" data-track-location="nav">
+ <a class="btn btn-gold" href="diagnostico-inicial.html" data-cta="pedir_muestra_gratis"><span class="cta-lg">Pedir diagnóstico inicial</span><span class="cta-sh">Diagnóstico inicial</span> <span class="ar" aria-hidden="true">→</span></a>
+ <a class="ico" href="https://wa.me/51906011090?text=Hola%2C%20vengo%20de%20kunturdata.com." aria-label="Escribir por WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.4z"></path><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.3-2-1-1 .8a4 4 0 0 1-2.2-2.2l.8-1-1-2z"></path></svg></a>
+-</nav>
++</div>
++</div>
+ </div>
+ 
+ </div>
+@@ -280,6 +299,7 @@ que publica el propio Google. También puede escribir a
+ <script src="assets/vendor/SplitText.min.js" defer></script>
+ <script src="assets/vendor/ScrambleTextPlugin.min.js" defer></script>
+ <script src="assets/vendor/lenis.min.js" defer></script>
++<script src="assets/kd-menu.js?v=20261119" defer></script>
+ <script src="assets/kd.js?v=20261105c" defer></script>
+ </body>
+ </html>
+diff --git a/terminos.html b/terminos.html
+index 6b15f86..e7499ed 100644
+--- a/terminos.html
++++ b/terminos.html
+@@ -51,6 +51,7 @@ body{margin:0;background:#143E46}
+ a{color:#1C5A63}a:hover{color:#0F2F35}
+ </style>
+ <link rel="stylesheet" href="assets/kd-tech.css?v=20261107">
++<link rel="stylesheet" href="assets/kd-menu.css?v=20261119">
+ </head>
+ <body>
+ <!-- Google Tag Manager (noscript) -->
+@@ -216,18 +217,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ </div>
+ </footer>
+ 
+-<div class="dock">
+-<nav class="bar" aria-label="Principal">
+-<a href="index.html" aria-label="Kuntur Data, inicio" style="display: inline-flex; padding-right: 8px;"><img width="555" height="370" class="sym" src="assets/logo/kuntur-data-simbolo-crema.svg" alt=""></a>
+-<div class="bl">
+-<a href="kuntur.html">Kuntur</a>
+-<a href="lupa-ux.html">Lupa UX</a>
+-<a href="agencias.html">Para agencias</a>
+-<a href="metodo.html">Método</a>
++<div class="nv" data-page="Condiciones">
++<div class="nv-dim" aria-hidden="true"></div>
++<div class="nv-panel" id="nvPanel" aria-hidden="true" data-track-location="nav_menu">
++<div class="nv-panel__bg" aria-hidden="true"></div>
++<nav class="nv-nav" aria-label="Menú">
++<p class="nv-title">Menú</p>
++<ul class="nv-main">
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="index.html" style="--i:0"><span class="nv-line">Inicio</span><span class="nv-line" aria-hidden="true">Inicio</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="kuntur.html" style="--i:1"><span class="nv-line">Kuntur</span><span class="nv-line" aria-hidden="true">Kuntur</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="lupa-ux.html" style="--i:2"><span class="nv-line">Lupa UX</span><span class="nv-line" aria-hidden="true">Lupa UX</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="agencias.html" style="--i:3"><span class="nv-line">Para agencias</span><span class="nv-line" aria-hidden="true">Para agencias</span></a></span></li>
++<li class="nv-item"><span class="nv-mask"><a class="nv-link" href="metodo.html" style="--i:4"><span class="nv-line">Método</span><span class="nv-line" aria-hidden="true">Método</span></a></span></li>
++</ul>
++<ul class="nv-sub"><li><a href="diagnostico-inicial.html">Diagnóstico inicial</a></li><li><a href="integraciones.html">Integraciones</a></li><li><a href="privacidad.html">Privacidad</a></li><li><a href="terminos.html" aria-current="page">Condiciones</a></li></ul>
++<p class="nv-meta"><span>Lima, Perú · Trabajo 100 % remoto</span><a href="https://wa.me/51906011090?text=Hola%2C%20vengo%20de%20kunturdata.com.">WhatsApp +51 906 011 090</a></p>
++<a class="btn btn-gold nv-cta" href="diagnostico-inicial.html" data-cta="pedir_muestra_gratis">Pedir diagnóstico inicial <span class="ar" aria-hidden="true">→</span></a>
++</nav>
+ </div>
++<div class="nv-row">
++<button class="nv-bar" type="button" aria-expanded="false" aria-controls="nvPanel" aria-label="Abrir menú">
++<span class="nv-bar__bg" aria-hidden="true"></span>
++<span class="nv-sym" aria-hidden="true"><img src="assets/logo/kuntur-data-simbolo-crema.svg" alt="" width="555" height="370"></span>
++<span class="nv-roller" aria-hidden="true"><span class="nv-col"><span class="nv-slot"><span class="nv-roll">Condiciones</span></span><span class="nv-slot"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M1 1l12 12M13 1L1 13"/></svg></span></span></span>
++<span class="nv-burger" aria-hidden="true"><svg viewBox="0 0 20 11" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M0 1h20M0 10h20"/></svg></span>
++</button>
++<div class="nv-act" data-track-location="nav">
+ <a class="btn btn-gold" href="diagnostico-inicial.html" data-cta="pedir_muestra_gratis"><span class="cta-lg">Pedir diagnóstico inicial</span><span class="cta-sh">Diagnóstico inicial</span> <span class="ar" aria-hidden="true">→</span></a>
+ <a class="ico" href="https://wa.me/51906011090?text=Hola%2C%20vengo%20de%20kunturdata.com." aria-label="Escribir por WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.4z"></path><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.3-2-1-1 .8a4 4 0 0 1-2.2-2.2l.8-1-1-2z"></path></svg></a>
+-</nav>
++</div>
++</div>
+ </div>
+ 
+ </div>
+@@ -236,6 +255,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ <script src="assets/vendor/SplitText.min.js" defer></script>
+ <script src="assets/vendor/ScrambleTextPlugin.min.js" defer></script>
+ <script src="assets/vendor/lenis.min.js" defer></script>
++<script src="assets/kd-menu.js?v=20261119" defer></script>
+ <script src="assets/kd.js?v=20261105c" defer></script>
+ </body>
+ </html>
+-- 
+2.43.0
+
